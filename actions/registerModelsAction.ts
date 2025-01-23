@@ -2,7 +2,7 @@
 
 import axios from "axios";
 
-export async function registerClienteAction(formData: {
+export async function registerModelsAction(formData: {
   nombreCompleto: string;
   email: string;
   nombreUsuario: string;

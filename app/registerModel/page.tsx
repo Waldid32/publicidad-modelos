@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { registerClienteAction } from "@/actions/registerClienteAction";
+import { registerModelsAction } from "@/actions/registerModelsAction";
 
 export default function RegisterModel() {
   const [formData, setFormData] = useState({
@@ -68,8 +68,7 @@ export default function RegisterModel() {
     }
 
     startTransition(async () => {
-      console.log({ formData });
-      const result = await registerClienteAction(formData);
+      const result = await registerModelsAction(formData);
 
       if (result.success) {
         toast.success("Registro exitoso. Ahora puedes iniciar sesión.");
@@ -101,7 +100,6 @@ export default function RegisterModel() {
         setSuggestions([]);
       }
     } catch (error) {
-      console.error("Error fetching locations:", error);
       toast.error("Error buscando ubicaciones. Intenta de nuevo.");
     }
   };

@@ -185,6 +185,7 @@ export default function RegisterCliente() {
                   required
                 />
               </div>
+              <div></div>
 
               <button
                 type="submit"
@@ -192,6 +193,13 @@ export default function RegisterCliente() {
                 disabled={isPending}
               >
                 {isPending ? "Registrando..." : "Registrarse"}
+              </button>
+              <button
+                type="button"
+                className="w-full text-white bg-primary-900 hover:bg-primary-950 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                onClick={() => router.push("/")}
+              >
+                Rregresar
               </button>
             </form>
           </div>

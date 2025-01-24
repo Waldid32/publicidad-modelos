@@ -9,6 +9,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        bgPrimaryGradiante:
+          "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(249,231,159,1) 0%, rgba(209,175,197,1) 100%, rgba(195,155,211,1) 100%)",
+      },
       colors: {
         primary: {
           "50": "#eff6ff",

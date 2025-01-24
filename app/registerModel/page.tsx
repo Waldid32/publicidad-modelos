@@ -112,11 +112,11 @@ export default function RegisterModel() {
   };
 
   return (
-    <section className="bg-gray-50 dark:bg-gray-900">
+    <section className="bg-gray-50 ">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:w-[750px] xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+        <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:w-[750px] xl:p-0 ">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
               Registro de Modelos
             </h1>
             <form onSubmit={handleSubmit} className="grid sm:grid-cols-2 gap-5">
@@ -124,7 +124,7 @@ export default function RegisterModel() {
               <div>
                 <label
                   htmlFor="nombreCompleto"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-gray-900 "
                 >
                   Nombre Completo
                 </label>
@@ -134,7 +134,7 @@ export default function RegisterModel() {
                   id="nombreCompleto"
                   value={formData.nombreCompleto}
                   onChange={handleChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 "
                   required
                 />
               </div>
@@ -143,7 +143,7 @@ export default function RegisterModel() {
               <div>
                 <label
                   htmlFor="email"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-gray-900"
                 >
                   Email
                 </label>
@@ -153,7 +153,7 @@ export default function RegisterModel() {
                   id="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 d"
                   required
                 />
               </div>
@@ -162,7 +162,7 @@ export default function RegisterModel() {
               <div>
                 <label
                   htmlFor="nombreUsuario"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-gray-900 "
                 >
                   Nombre de Usuario
                 </label>
@@ -172,7 +172,7 @@ export default function RegisterModel() {
                   id="nombreUsuario"
                   value={formData.nombreUsuario}
                   onChange={handleChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 "
                   required
                 />
               </div>
@@ -181,7 +181,7 @@ export default function RegisterModel() {
               <div>
                 <label
                   htmlFor="fechaNacimiento"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-gray-900 "
                 >
                   Fecha de Nacimiento
                 </label>
@@ -192,21 +192,21 @@ export default function RegisterModel() {
                   value={formData.fechaNacimiento}
                   onChange={handleChange}
                   max={maxDate}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
                   required
                 />
               </div>
 
               {/* Etnia */}
               <div className="user-box">
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                <label className="block mb-2 text-sm font-medium text-gray-900">
                   Etnia
                 </label>
                 <select
                   name="etnia"
                   id="etnia"
                   onChange={handleChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 "
                   required
                 >
                   <option value="">Selecciona una opción</option>
@@ -239,7 +239,7 @@ export default function RegisterModel() {
               <div>
                 <label
                   htmlFor="zona"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-gray-900"
                 >
                   Zona / Dirección
                 </label>
@@ -252,7 +252,7 @@ export default function RegisterModel() {
                     handleChange(e);
                     fetchLocations(e.target.value); // Llamada a OpenCage mientras escriben
                   }}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 "
                   required
                 />
                 {/* Sugerencias */}
@@ -275,7 +275,7 @@ export default function RegisterModel() {
               <div>
                 <label
                   htmlFor="ciudad"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-gray-900 "
                 >
                   Ciudad
                 </label>
@@ -285,7 +285,7 @@ export default function RegisterModel() {
                   id="ciudad"
                   value={formData.ciudad}
                   onChange={handleChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 "
                   required
                 />
               </div>
@@ -294,7 +294,7 @@ export default function RegisterModel() {
               <div>
                 <label
                   htmlFor="password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-gray-900 "
                 >
                   Contraseña
                 </label>
@@ -304,7 +304,7 @@ export default function RegisterModel() {
                   id="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 "
                   required
                 />
               </div>
@@ -313,7 +313,7 @@ export default function RegisterModel() {
               <div>
                 <label
                   htmlFor="confirmarPassword"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-gray-900 "
                 >
                   Confirmar Contraseña
                 </label>
@@ -323,7 +323,7 @@ export default function RegisterModel() {
                   id="confirmarPassword"
                   value={formData.confirmarPassword}
                   onChange={handleChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 "
                   required
                 />
               </div>
@@ -331,14 +331,14 @@ export default function RegisterModel() {
 
               <button
                 type="submit"
-                className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                className="w-full text-white bg-segundary hover:bg-primary hover:text-black focus:ring-4 focus:outline-none focus:ring-primary font-medium rounded-lg text-sm px-5 py-2.5 text-center "
                 disabled={isPending}
               >
                 {isPending ? "Registrando..." : "Registrarse"}
               </button>
               <button
                 type="button"
-                className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                className="w-full text-white bg-segundary hover:bg-primary  hover:text-black focus:ring-4 focus:outline-none focus:ring-primary font-medium rounded-lg text-sm px-5 py-2.5 text-center "
                 onClick={() => router.push("/")}
               >
                 Rregresar

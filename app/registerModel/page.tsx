@@ -38,12 +38,21 @@ export default function RegisterModel() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    let { name, value } = e.target;
 
-    // Activar debounce solo para el campo "zona"
-    if (e.target.name === "zona") {
+    // Forzar a minúsculas si es el campo "nombreUsuario"
+    if (name === "nombreUsuario") {
+      value = value.toLowerCase();
+    }
+
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+
+    if (name === "zona") {
       if (debounceTimer) clearTimeout(debounceTimer); // Limpiar el temporizador previo
-      const timer = setTimeout(() => fetchLocations(e.target.value), 500); // Consultar después de 500ms
+      const timer = setTimeout(() => fetchLocations(value), 500); // Consultar después de 500ms
       setDebounceTimer(timer); // Guardar el nuevo temporizador
     }
   };
@@ -172,7 +181,7 @@ export default function RegisterModel() {
                   id="nombreUsuario"
                   value={formData.nombreUsuario}
                   onChange={handleChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 "
+                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 lowercase"
                   required
                 />
               </div>

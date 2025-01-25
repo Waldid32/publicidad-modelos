@@ -1,5 +1,7 @@
-import React from "react";
-
 export default function Modelos() {
-  return <div>Modelos</div>;
+  return (
+    <div>
+      <h1>Página de Modelos</h1>
+    </div>
+  );
 }

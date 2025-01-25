@@ -21,7 +21,7 @@ export default function RegisterModel() {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(
     null
-  ); // Timer para debounce
+  );
 
   const router = useRouter();
 

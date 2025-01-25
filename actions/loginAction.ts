@@ -17,20 +17,32 @@ export async function loginAction({
       password,
     });
 
-    // Almacena el token y el rol en cookies
-    (await cookies()).set("access_token", data.access_token, {
+    // Almacena el token, el rol y el nombreUsuario en cookies
+    const cookieStore = cookies();
+
+    (await cookieStore).set("access_token", data.access_token, {
       httpOnly: true,
     });
-    (await cookies()).set("role", data.user.rol, { httpOnly: true });
 
-    // Devuelve el rol para redireccionar
+    (await cookieStore).set("role", data.user.rol, {
+      httpOnly: true,
+    });
+
+    (await cookieStore).set("nombreUsuario", data.user.nombreUsuario, {
+      httpOnly: true,
+    });
+
+    (await cookieStore).set("nombreCompleto", data.user.nombreCompleto, {
+      httpOnly: true,
+    });
+
     return {
       success: true,
       role: data.user.rol,
       username: data.user.nombreUsuario,
+      nombreCompleto: data.user.nombreCompleto,
     };
   } catch (error) {
-    // Manejo de errores
     return { success: false, message: "Credenciales incorrectas" };
   }
 }

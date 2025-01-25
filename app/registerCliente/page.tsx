@@ -28,7 +28,11 @@ export default function RegisterCliente() {
     .split("T")[0];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: name === "nombreUsuario" ? value.toLowerCase() : value,
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -123,7 +127,7 @@ export default function RegisterCliente() {
                   id="nombreUsuario"
                   value={formData.nombreUsuario}
                   onChange={handleChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 "
+                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 lowercase"
                   required
                 />
               </div>

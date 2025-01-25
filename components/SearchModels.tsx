@@ -118,7 +118,7 @@ export function SearchModels({ setDataModels }: any) {
           value={formData.nombreCompleto}
           onChange={handleChange}
           placeholder="Nombre en especial"
-          className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block p-2.5 w-96 lg:w-full"
+          className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block p-2.5 w-full lg:w-full"
         />
       </div>
 
@@ -136,7 +136,7 @@ export function SearchModels({ setDataModels }: any) {
           id="edad"
           value={formData.edad}
           onChange={handleChange}
-          className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block p-2.5 w-96 lg:w-full"
+          className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block p-2.5 w-full lg:w-full"
           max={90}
         />
       </div>
@@ -158,7 +158,7 @@ export function SearchModels({ setDataModels }: any) {
             handleChange(e);
             fetchLocations(e.target.value);
           }}
-          className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block p-2.5 w-96 lg:w-full"
+          className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block p-2.5 w-full lg:w-full"
         />
         {/* Sugerencias */}
         {suggestions.length > 0 && (
@@ -167,7 +167,7 @@ export function SearchModels({ setDataModels }: any) {
               <li
                 key={index}
                 onClick={() => handleSuggestionClick(suggestion)}
-                className="p-2 hover:bg-gray-200 cursor-pointer w-96"
+                className="p-2 hover:bg-gray-200 cursor-pointer w-full"
               >
                 {suggestion}
               </li>
@@ -185,7 +185,7 @@ export function SearchModels({ setDataModels }: any) {
           name="etnia"
           id="etnia"
           onChange={handleChange}
-          className="bg-gray-50 border border-gray-300 text-black rounded-lg focus:ring-primary focus:border-primary block p-2.5 w-96 lg:w-full"
+          className="bg-gray-50 border border-gray-300 text-black rounded-lg focus:ring-primary focus:border-primary block p-2.5 w-full lg:w-full"
         >
           <option value="">Selecciona una opción</option>
           <optgroup label="Europa">
@@ -223,7 +223,7 @@ export function SearchModels({ setDataModels }: any) {
         <select
           id="idiomas"
           name="idiomas"
-          className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 w-96 lg:w-full"
+          className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 w-full lg:w-full"
           onChange={handleChange}
         >
           <option value="">Seleccione un idioma</option>
@@ -252,7 +252,7 @@ export function SearchModels({ setDataModels }: any) {
           id="precio"
           value={formData.precio}
           onChange={handleChange}
-          className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block p-2.5 w-96 lg:w-full"
+          className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block p-2.5 w-full lg:w-full"
         />
       </div>
 

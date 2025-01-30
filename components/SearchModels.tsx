@@ -62,7 +62,6 @@ export function SearchModels({ setDataModels }: any) {
     e.preventDefault();
 
     startTransition(async () => {
-      console.log({ formData });
       const result = await searhModels(formData);
       setDataModels(result);
     });

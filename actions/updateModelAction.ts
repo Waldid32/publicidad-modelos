@@ -5,14 +5,16 @@ export async function updateModelAction(
   nombreUsuario: string,
   formData: FormData
 ) {
-  const uri = `${process.env.API_URL}/users/models/${nombreUsuario}`;
-
   try {
-    const result = await axios.patch(uri, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const result = await axios.patch(
+      `${process.env.API_URL}/users/models/${nombreUsuario}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
     return { success: true, data: result.data };
   } catch (error: any) {
     return {

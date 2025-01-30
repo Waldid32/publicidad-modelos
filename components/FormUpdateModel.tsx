@@ -1,14 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import { etniaMap } from "@/utils/etniaMap";
 import { toast } from "sonner";
 import { updateModelAction } from "@/actions/updateModelAction";
 import { idiomasDisponibles } from "@/utils/idiomasMap";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface FormUpdateModelProps {
-  dataModel: any; // Podrías tipar esto mejor, por ejemplo con un UserModel
+  dataModel: {
+    duracionesAdicionales: string;
+    edad: string;
+    multimedias: (string | File)[];
+    idiomas: string;
+    nombreUsuario: string;
+    numeroContacto: string;
+    precioHora: string;
+    rol: string;
+    descripcion: string;
+  };
 }
 
 const MAX_IMAGE_SIZE = 2 * 1024 * 1024; // 2 MB
@@ -17,33 +27,25 @@ const MAX_VIDEO_SIZE = 20 * 1024 * 1024; // 20MB
 const ALLOWED_VIDEO_TYPES = ["video/mp4"];
 
 export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
-  const {
-    duracionesAdicionales,
-    edad,
-    fotos,
-    idiomas,
-    nombreUsuario,
-    numeroContacto,
-    precioHora,
-    rol,
-    videos,
-    zona,
-    descripcion,
-  } = dataModel;
-
-  // Crea un objeto de estado inicial
-  const [formData, setFormData] = useState({
-    duracionesAdicionales: duracionesAdicionales || "",
-    edad: edad || "",
-    idiomas: Array.isArray(idiomas) ? idiomas : idiomas ? [idiomas] : [],
-    numeroContacto: numeroContacto || "",
-    precioHora: precioHora || "",
-    zona: zona || "",
-    descripcion: descripcion || "",
-    fotos: [] as File[],
-    videos: [] as File[],
+  const [formData, setFormData] = useState<{
+    duracionesAdicionales: string;
+    edad: string;
+    idiomas: string[];
+    numeroContacto: string;
+    precioHora: string;
+    descripcion: string;
+    multimedias: (string | File)[];
+  }>({
+    duracionesAdicionales: dataModel.duracionesAdicionales || "",
+    edad: dataModel.edad?.toString() || "",
+    idiomas: Array.isArray(dataModel.idiomas) ? dataModel.idiomas : [],
+    numeroContacto: dataModel.numeroContacto || "",
+    precioHora: dataModel.precioHora?.toString() || "",
+    descripcion: dataModel.descripcion || "",
+    multimedias: dataModel.multimedias || [],
   });
 
+  const { nombreUsuario } = dataModel;
   const router = useRouter();
 
   const handleChange = (
@@ -53,13 +55,11 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
   ) => {
     const { name, value } = e.target;
 
-    // Si es un select múltiple llamado "idiomas"
     if (
       e.target instanceof HTMLSelectElement &&
       e.target.multiple &&
       name === "idiomas"
     ) {
-      // Obtenemos todos los valores seleccionados
       const selectedValues = Array.from(e.target.options)
         .filter((opt) => opt.selected)
         .map((opt) => opt.value);
@@ -69,7 +69,6 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
         [name]: selectedValues,
       }));
     } else {
-      // Inputs normales (text, number, textarea, etc.)
       setFormData((prev) => ({
         ...prev,
         [name]: value,
@@ -77,88 +76,80 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
     }
   };
 
-  // Cambia tu handleFileChange a algo así:
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    if (!files) return;
+    const { files } = e.target;
+    if (!files || files.length === 0) return;
 
-    const fileArray = Array.from(files);
-
-    // 1. Verifica si alguno no cumple las reglas
-    //    Si hay al menos uno inválido, limpias la selección y sales
-    for (const file of fileArray) {
-      if (name === "fotos") {
+    const fileArray = Array.from(files).filter((file) => {
+      if (file.type.startsWith("image/")) {
         if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-          toast.error(`Tipo de imagen no permitido`);
-          e.target.value = ""; // Limpia el input de archivos
-          return; // Salimos sin actualizar el estado
+          toast.error(`Tipo de imagen no permitido: ${file.type}`);
+          return false;
         }
         if (file.size > MAX_IMAGE_SIZE) {
           toast.error(
-            `La imagen excede los ${MAX_IMAGE_SIZE / (1024 * 1024)} MB`
+            `La imagen excede el tamaño permitido (${
+              MAX_IMAGE_SIZE / 1024 / 1024
+            } MB)`
           );
-          e.target.value = "";
-          return;
+          return false;
         }
-      } else if (name === "videos") {
+      } else if (file.type.startsWith("video/")) {
         if (!ALLOWED_VIDEO_TYPES.includes(file.type)) {
-          toast.error(`Tipo de video no permitido`);
-          e.target.value = "";
-          return;
+          toast.error(`Tipo de video no permitido: ${file.type}`);
+          return false;
         }
         if (file.size > MAX_VIDEO_SIZE) {
           toast.error(
-            `El video excede los ${MAX_VIDEO_SIZE / (1024 * 1024)} MB`
+            `El video excede el tamaño permitido (${
+              MAX_VIDEO_SIZE / 1024 / 1024
+            } MB)`
           );
-          e.target.value = "";
-          return;
+          return false;
         }
+      } else {
+        toast.error(`Tipo de archivo no permitido: ${file.type}`);
+        return false;
       }
-    }
+      return true;
+    });
 
     setFormData((prev) => ({
       ...prev,
-      [name]: fileArray,
+      multimedias: [...prev.multimedias, ...fileArray],
     }));
   };
 
-  // Manejador submit
+  const handleRemoveMedia = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      multimedias: prev.multimedias.filter((_, i) => i !== index),
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const fd = new FormData();
 
-    // Convertimos edad y precioHora a números
-    const edadNumerica = parseInt(formData.edad, 10);
-    const precioHoraNumerico = parseFloat(formData.precioHora);
-
-    // Verificamos que los valores sean válidos antes de enviar
-    if (isNaN(edadNumerica) || isNaN(precioHoraNumerico)) {
-      toast.error("Edad o precio por hora no válidos");
-      return;
-    }
-
-    // Asegúrate de pasar los valores como cadenas, pero a partir de números válidos
-    fd.append("edad", edadNumerica.toString());
-    fd.append("precioHora", precioHoraNumerico.toString());
-
-    // El resto de los campos se mantienen igual
+    fd.append("edad", formData.edad);
+    fd.append("precioHora", formData.precioHora);
     fd.append("descripcion", formData.descripcion);
     fd.append("duracionesAdicionales", formData.duracionesAdicionales);
     fd.append("numeroContacto", formData.numeroContacto);
-    formData.idiomas.forEach((idioma) => {
-      fd.append("idiomas", idioma);
-    });
-    formData.fotos.forEach((file) => {
-      fd.append("fotos", file);
-    });
-    formData.videos.forEach((file) => {
-      fd.append("videos", file);
+
+    formData.idiomas.forEach((idioma) => fd.append("idiomas[]", idioma));
+
+    formData.multimedias.forEach((media) => {
+      if (typeof media === "string") {
+        fd.append("multimedias", media);
+      } else {
+        fd.append("multimedias", media);
+      }
     });
 
     try {
       const response = await updateModelAction(nombreUsuario, fd);
-
       if (response.success) {
         toast.success("Información actualizada exitosamente");
         router.push("/modelo");
@@ -166,8 +157,16 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
         toast.error(response.message);
       }
     } catch (error) {
+      console.error("Error en la solicitud:", error);
       toast.error("Error al actualizar la información");
     }
+  };
+
+  const isVideo = (file: string | File) => {
+    if (typeof file === "string") {
+      return file.match(/\.(mp4)$/i);
+    }
+    return file.type.startsWith("video/");
   };
 
   return (
@@ -294,44 +293,64 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
           </label>
         </div>
 
-        {/* Fotos (File) */}
+        {/* Multimedia */}
         <div className="relative z-0 w-full mb-5 group">
           <label
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            htmlFor="fotos"
+            className="block mb-2 text-sm font-medium text-gray-900"
+            htmlFor="multimedia"
           >
-            Fotos
+            Multimedias (Imágenes y Videos)
           </label>
           <input
-            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-            id="fotos"
-            name="fotos"
             type="file"
-            accept="image/png, image/jpeg"
             multiple
+            accept="image/png, image/jpeg, video/mp4"
+            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
             onChange={handleFileChange}
-            required
-          ></input>
+          />
+          <div className="flex gap-3 mt-3 flex-wrap">
+            {formData.multimedias.map((media, index) => (
+              <div key={index} className="relative">
+                {isVideo(media) ? (
+                  // Render video preview
+                  <video
+                    src={
+                      typeof media === "string"
+                        ? media
+                        : URL.createObjectURL(media)
+                    }
+                    className="w-40 h-48 object-cover"
+                    controls
+                  />
+                ) : // Render image preview
+                typeof media === "string" ? (
+                  <Image
+                    src={media}
+                    alt={`Media ${index + 1}`}
+                    width={160}
+                    height={160}
+                  />
+                ) : (
+                  <Image
+                    src={URL.createObjectURL(media)}
+                    alt={`Nueva media ${index + 1}`}
+                    className="w-20 h-20 object-cover"
+                    width={160}
+                    height={160}
+                  />
+                )}
+                <button
+                  type="button"
+                  onClick={() => handleRemoveMedia(index)}
+                  className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
+                >
+                  X
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
-
-        {/* Videos (File) */}
-        <div className="relative z-0 w-full mb-5 group">
-          <label
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            htmlFor="videos"
-          >
-            Videos
-          </label>
-          <input
-            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-            id="videos"
-            name="videos"
-            type="file"
-            accept="video/mp4"
-            multiple
-            onChange={handleFileChange}
-          ></input>
-        </div>
+        <div></div>
 
         {/* Botón submit */}
         <div>

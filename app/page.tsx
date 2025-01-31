@@ -8,8 +8,6 @@ import { SearchModels } from "@/components/SearchModels";
 export default function Home() {
   const [dataModels, setDataModels] = useState([]);
 
-  console.log(dataModels);
-
   return (
     <div>
       <Navbar />

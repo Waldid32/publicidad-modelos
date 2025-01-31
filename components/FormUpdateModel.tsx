@@ -1,145 +1,172 @@
 "use client";
 
-import React, { useState, ChangeEvent } from "react";
-import { etniaMap } from "@/utils/etniaMap";
+import { useState } from "react";
 import { toast } from "sonner";
+import { updateModelAction } from "@/actions/updateModelAction";
+import { idiomasDisponibles } from "@/utils/idiomasMap";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface FormUpdateModelProps {
-  dataModel: any; // Podrías tipar esto mejor, por ejemplo con un UserModel
+  dataModel: {
+    duracionesAdicionales: string;
+    edad: string;
+    multimedias: (string | File)[];
+    idiomas: string;
+    nombreUsuario: string;
+    numeroContacto: string;
+    precioHora: string;
+    rol: string;
+    descripcion: string;
+  };
 }
 
 const MAX_IMAGE_SIZE = 2 * 1024 * 1024; // 2 MB
 const ALLOWED_IMAGE_TYPES = ["image/png", "image/jpeg"];
-const MAX_VIDEO_SIZE = 20 * 1024 * 1024; // 20 MB (ejemplo)
+const MAX_VIDEO_SIZE = 20 * 1024 * 1024; // 20MB
 const ALLOWED_VIDEO_TYPES = ["video/mp4"];
 
-// Componente Client
 export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
-  // Extrae los campos iniciales de dataModel
-  const {
-    ciudad,
-    duracionesAdicionales,
-    edad,
-    email,
-    etnia,
-    fotos,
-    idiomas,
-    nombreCompleto,
-    nombreUsuario,
-    numeroContacto,
-    password,
-    precioHora,
-    rol,
-    videos,
-    zona,
-    descripcion,
-  } = dataModel;
-
-  // Crea un objeto de estado inicial
-  const [formData, setFormData] = useState({
-    ciudad: ciudad || "",
-    duracionesAdicionales: duracionesAdicionales || "",
-    edad: edad || "",
-    email: email || "",
-    etnia: etniaMap[etnia] || etnia, // Formateas aquí o guardas la clave real
-    idiomas: idiomas || "",
-    nombreCompleto: nombreCompleto || "",
-    nombreUsuario: nombreUsuario || "",
-    numeroContacto: numeroContacto || "",
-    precioHora: precioHora || "",
-    zona: zona || "",
-    descripcion: descripcion || "",
-    // Para los archivos, guardaremos un arreglo de FileList o algo similar:
-    fotos: [] as File[],
-    videos: [] as File[],
+  const [formData, setFormData] = useState<{
+    duracionesAdicionales: string;
+    edad: string;
+    idiomas: string[];
+    numeroContacto: string;
+    precioHora: string;
+    descripcion: string;
+    multimedias: (string | File)[];
+  }>({
+    duracionesAdicionales: dataModel.duracionesAdicionales || "",
+    edad: dataModel.edad?.toString() || "",
+    idiomas: Array.isArray(dataModel.idiomas) ? dataModel.idiomas : [],
+    numeroContacto: dataModel.numeroContacto || "",
+    precioHora: dataModel.precioHora?.toString() || "",
+    descripcion: dataModel.descripcion || "",
+    multimedias: dataModel.multimedias || [],
   });
 
-  // Manejador para cambios en campos de texto
+  const { nombreUsuario } = dataModel;
+  const router = useRouter();
+
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+
+    if (
+      e.target instanceof HTMLSelectElement &&
+      e.target.multiple &&
+      name === "idiomas"
+    ) {
+      const selectedValues = Array.from(e.target.options)
+        .filter((opt) => opt.selected)
+        .map((opt) => opt.value);
+
+      setFormData((prev) => ({
+        ...prev,
+        [name]: selectedValues,
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
-  // Cambia tu handleFileChange a algo así:
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    if (!files) return;
+    const { files } = e.target;
+    if (!files || files.length === 0) return;
 
-    const fileArray = Array.from(files);
-
-    // 1. Verifica si alguno no cumple las reglas
-    //    Si hay al menos uno inválido, limpias la selección y sales
-    for (const file of fileArray) {
-      if (name === "fotos") {
+    const fileArray = Array.from(files).filter((file) => {
+      if (file.type.startsWith("image/")) {
         if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-          toast.error(`Tipo de imagen no permitido`);
-          e.target.value = ""; // Limpia el input de archivos
-          return; // Salimos sin actualizar el estado
+          toast.error(`Tipo de imagen no permitido: ${file.type}`);
+          return false;
         }
         if (file.size > MAX_IMAGE_SIZE) {
           toast.error(
-            `La imagen excede los ${MAX_IMAGE_SIZE / (1024 * 1024)} MB`
+            `La imagen excede el tamaño permitido (${
+              MAX_IMAGE_SIZE / 1024 / 1024
+            } MB)`
           );
-          e.target.value = "";
-          return;
+          return false;
         }
-      } else if (name === "videos") {
+      } else if (file.type.startsWith("video/")) {
         if (!ALLOWED_VIDEO_TYPES.includes(file.type)) {
-          toast.error(`Tipo de video no permitido`);
-          e.target.value = "";
-          return;
+          toast.error(`Tipo de video no permitido: ${file.type}`);
+          return false;
         }
         if (file.size > MAX_VIDEO_SIZE) {
           toast.error(
-            `El video excede los ${MAX_VIDEO_SIZE / (1024 * 1024)} MB`
+            `El video excede el tamaño permitido (${
+              MAX_VIDEO_SIZE / 1024 / 1024
+            } MB)`
           );
-          e.target.value = "";
-          return;
+          return false;
         }
+      } else {
+        toast.error(`Tipo de archivo no permitido: ${file.type}`);
+        return false;
       }
-    }
+      return true;
+    });
 
-    // 2. Si todos son válidos, actualiza el estado
     setFormData((prev) => ({
       ...prev,
-      [name]: fileArray, // Se almacenan todos porque pasaron la validación
+      multimedias: [...prev.multimedias, ...fileArray],
     }));
   };
 
-  // Manejador submit
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleRemoveMedia = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      multimedias: prev.multimedias.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // En este punto, formData contiene todos los campos
-    // + arrays con los archivos seleccionados
+    const fd = new FormData();
 
-    // Ejemplo: Convertir a JSON (sin archivos)
-    // (OJO: si realmente quieres subir archivos, usa FormData en lugar de JSON)
-    const dataToSend = {
-      ...formData,
-      // Si quisieras guardar la clave original de etnia,
-      // tendrías que almacenarla por separado,
-      // pues ahorita guardamos la descripción.
-    };
+    fd.append("edad", formData.edad);
+    fd.append("precioHora", formData.precioHora);
+    fd.append("descripcion", formData.descripcion);
+    fd.append("duracionesAdicionales", formData.duracionesAdicionales);
+    fd.append("numeroContacto", formData.numeroContacto);
 
-    console.log("Datos a enviar:", dataToSend);
+    formData.idiomas.forEach((idioma) => fd.append("idiomas[]", idioma));
 
-    // OPCIÓN A: Llamar Server Action
-    // startTransition(async () => {
-    //   await updateModelAction(dataToSend);
-    // });
+    formData.multimedias.forEach((media) => {
+      if (typeof media === "string") {
+        fd.append("multimedias", media);
+      } else {
+        fd.append("multimedias", media);
+      }
+    });
 
-    // OPCIÓN B: fetch() a tu endpoint
-    // fetch("/api/update-model", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(dataToSend),
-    // }).then(...).catch(...);
+    try {
+      const response = await updateModelAction(nombreUsuario, fd);
+      if (response.success) {
+        toast.success("Información actualizada exitosamente");
+        router.push("/modelo");
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+      toast.error("Error al actualizar la información");
+    }
+  };
+
+  const isVideo = (file: string | File) => {
+    if (typeof file === "string") {
+      return file.match(/\.(mp4)$/i);
+    }
+    return file.type.startsWith("video/");
   };
 
   return (
@@ -149,86 +176,21 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
         onSubmit={handleSubmit}
         className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full px-10 lg:px-52"
       >
-        {/* nombreCompleto */}
+        {/* descripcion */}
         <div className="relative z-0 w-full mb-5 group">
-          <input
-            type="text"
-            name="nombreCompleto"
-            id="nombreCompleto"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 focus:outline-none focus:border-blue-600 peer uppercase"
-            value={formData.nombreCompleto}
-            onChange={handleChange}
-            disabled
-          />
-        </div>
-
-        {/* email */}
-        <div className="relative z-0 w-full mb-5 group">
-          <input
-            type="email"
-            name="email"
-            id="email"
-            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2 border-gray-300 focus:outline-none focus:border-blue-600"
-            value={formData.email}
-            onChange={handleChange}
-            disabled
-          />
-        </div>
-
-        {/* etnia (formateada) */}
-        <div className="relative z-0 w-full mb-5 group">
-          <input
-            type="text"
-            name="etnia"
-            id="etnia"
-            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2 border-gray-300"
-            value={formData.etnia}
-            onChange={handleChange}
-            disabled
-          />
-        </div>
-
-        {/* zona */}
-        <div className="relative z-0 w-full mb-5 group">
-          <input
-            type="text"
-            name="zona"
-            id="zona"
-            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2 border-gray-300"
-            value={formData.zona}
-            onChange={handleChange}
-            disabled
-          />
-        </div>
-
-        {/* ciudad */}
-        <div className="relative z-0 w-full mb-5 group">
-          <input
-            type="text"
-            name="ciudad"
-            id="ciudad"
-            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2 border-gray-300"
-            value={formData.ciudad}
-            onChange={handleChange}
-            disabled
-          />
-        </div>
-
-        {/* idiomas */}
-        <div className="relative z-0 w-full mb-5 group">
-          <input
-            type="text"
-            name="idiomas"
-            id="idiomas"
+          <textarea
+            name="descripcion"
+            id="descripcion"
             className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2"
-            value={formData.idiomas}
+            value={formData.descripcion}
             onChange={handleChange}
-          />
+            required
+          ></textarea>
           <label
-            htmlFor="idiomas"
+            htmlFor="descripcion"
             className="peer-focus:font-medium text-sm text-gray-500"
           >
-            Idiomas
+            Presentación de modelo
           </label>
         </div>
 
@@ -270,24 +232,6 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
           </label>
         </div>
 
-        {/* descripcion */}
-        <div className="relative z-0 w-full mb-5 group">
-          <textarea
-            name="descripcion"
-            id="descripcion"
-            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2"
-            value={formData.descripcion}
-            onChange={handleChange}
-            required
-          ></textarea>
-          <label
-            htmlFor="descripcion"
-            className="peer-focus:font-medium text-sm text-gray-500"
-          >
-            Descripción
-          </label>
-        </div>
-
         {/* precioHora */}
         <div className="relative z-0 w-full mb-5 group">
           <input
@@ -303,7 +247,31 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
             htmlFor="precioHora"
             className="peer-focus:font-medium text-sm text-gray-500"
           >
-            Precio por Hora
+            $ Precio por Hora
+          </label>
+        </div>
+
+        {/* idiomas */}
+        <div className="relative z-0 w-full mb-5 group">
+          <select
+            multiple
+            name="idiomas"
+            id="idiomas"
+            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2"
+            value={formData.idiomas} // <-- formData.idiomas es un array
+            onChange={handleChange}
+          >
+            {idiomasDisponibles.map((idioma) => (
+              <option key={idioma.value} value={idioma.value}>
+                {idioma.label}
+              </option>
+            ))}
+          </select>
+          <label
+            htmlFor="idiomas"
+            className="peer-focus:font-medium text-sm text-gray-500"
+          >
+            Idiomas
           </label>
         </div>
 
@@ -321,48 +289,68 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
             htmlFor="duracionesAdicionales"
             className="peer-focus:font-medium text-sm text-gray-500"
           >
-            Duraciones Adicionales
+            Duraciones Adicionales / de servicios
           </label>
         </div>
 
-        {/* Fotos (File) */}
+        {/* Multimedia */}
         <div className="relative z-0 w-full mb-5 group">
           <label
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            htmlFor="fotos"
+            className="block mb-2 text-sm font-medium text-gray-900"
+            htmlFor="multimedia"
           >
-            Fotos
+            Multimedias (Imágenes y Videos)
           </label>
           <input
-            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-            id="fotos"
-            name="fotos"
             type="file"
-            accept="image/png, image/jpeg"
             multiple
+            accept="image/png, image/jpeg, video/mp4"
+            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
             onChange={handleFileChange}
-            required
-          ></input>
+          />
+          <div className="flex gap-3 mt-3 flex-wrap">
+            {formData.multimedias.map((media, index) => (
+              <div key={index} className="relative">
+                {isVideo(media) ? (
+                  // Render video preview
+                  <video
+                    src={
+                      typeof media === "string"
+                        ? media
+                        : URL.createObjectURL(media)
+                    }
+                    className="w-40 h-48 object-cover"
+                    controls
+                  />
+                ) : // Render image preview
+                typeof media === "string" ? (
+                  <Image
+                    src={media}
+                    alt={`Media ${index + 1}`}
+                    width={160}
+                    height={160}
+                  />
+                ) : (
+                  <Image
+                    src={URL.createObjectURL(media)}
+                    alt={`Nueva media ${index + 1}`}
+                    className="w-20 h-20 object-cover"
+                    width={160}
+                    height={160}
+                  />
+                )}
+                <button
+                  type="button"
+                  onClick={() => handleRemoveMedia(index)}
+                  className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
+                >
+                  X
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
-
-        {/* Videos (File) */}
-        <div className="relative z-0 w-full mb-5 group">
-          <label
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            htmlFor="videos"
-          >
-            Videos
-          </label>
-          <input
-            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-            id="videos"
-            name="videos"
-            type="file"
-            accept="video/mp4"
-            multiple
-            onChange={handleFileChange}
-          ></input>
-        </div>
+        <div></div>
 
         {/* Botón submit */}
         <div>
@@ -372,7 +360,7 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
               focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium 
               rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           >
-            Submit
+            Actualizar Información
           </button>
         </div>
       </form>

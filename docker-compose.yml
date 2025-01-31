@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "3232:3232"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - PORT=3232

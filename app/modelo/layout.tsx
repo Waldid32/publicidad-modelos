@@ -14,7 +14,6 @@ export default async function ModeloLayout({
   const cookieStore = await cookies();
 
   const role = cookieStore.get("role")?.value || "";
-  const nombreUsuario = cookieStore.get("nombreUsuario")?.value || "";
   const nombreCompleto = cookieStore.get("nombreCompleto")?.value || "";
 
   return (

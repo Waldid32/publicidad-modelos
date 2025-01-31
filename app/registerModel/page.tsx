@@ -5,8 +5,28 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { registerModelsAction } from "@/actions/registerModelsAction";
 
+interface FormData {
+  nombreCompleto: string;
+  email: string;
+  nombreUsuario: string;
+  fechaNacimiento: string;
+  password: string;
+  confirmarPassword: string;
+  etnia: string;
+  zona: string;
+  ciudad: string;
+}
+
+interface OpenCageResult {
+  formatted: string;
+}
+
+interface OpenCageResponse {
+  results: OpenCageResult[];
+}
+
 export default function RegisterModel() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     nombreCompleto: "",
     email: "",
     nombreUsuario: "",
@@ -38,17 +58,20 @@ export default function RegisterModel() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    let { name, value } = e.target;
+    const { name, value } = e.target;
 
     // Forzar a minúsculas si es el campo "nombreUsuario"
     if (name === "nombreUsuario") {
-      value = value.toLowerCase();
+      setFormData({
+        ...formData,
+        [name]: value.toLowerCase(),
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
     }
-
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
 
     if (name === "zona") {
       if (debounceTimer) clearTimeout(debounceTimer); // Limpiar el temporizador previo
@@ -98,17 +121,18 @@ export default function RegisterModel() {
       const response = await fetch(
         `https://api.opencagedata.com/geocode/v1/json?q=${query}&key=${process.env.NEXT_PUBLIC_OPENCAGE_API_KEY}&limit=50&countrycode=es&language=es`
       );
-      const data = await response.json();
+      const data: OpenCageResponse = await response.json();
 
       if (data.results) {
         const formattedSuggestions = data.results.map(
-          (result: any) => result.formatted
+          (result: OpenCageResult) => result.formatted
         );
         setSuggestions(formattedSuggestions);
       } else {
         setSuggestions([]);
       }
     } catch (error) {
+      console.error("Error fetching locations:", error); // Utilizar 'error' para depuración
       toast.error("Error buscando ubicaciones. Intenta de nuevo.");
     }
   };
@@ -162,7 +186,7 @@ export default function RegisterModel() {
                   id="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 d"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
                   required
                 />
               </div>
@@ -350,7 +374,7 @@ export default function RegisterModel() {
                 className="w-full text-white bg-segundary hover:bg-primary  hover:text-black focus:ring-4 focus:outline-none focus:ring-primary font-medium rounded-lg text-sm px-5 py-2.5 text-center "
                 onClick={() => router.push("/")}
               >
-                Rregresar
+                Regresar
               </button>
             </form>
           </div>

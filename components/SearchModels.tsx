@@ -1,19 +1,11 @@
 "use client";
 import { searhModels } from "@/actions/searhModels";
+import { ModelData } from "@/utils/types";
 import { useState } from "react";
 import { toast } from "sonner";
 
-interface PropsDataModels {
-  nombreCompleto: string;
-  etnia: string;
-  zona: string;
-  idiomas: string;
-  edad: number;
-  precio: number;
-}
-
 interface SearchModelsProps {
-  setDataModels: (data: PropsDataModels[]) => void;
+  setDataModels: (data: ModelData[]) => void;
 }
 
 interface OpenCageResult {

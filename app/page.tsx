@@ -4,9 +4,10 @@ import { useState } from "react";
 import { BoxModel } from "@/components/BoxModel";
 import { Navbar } from "@/components/Navbar";
 import { SearchModels } from "@/components/SearchModels";
+import { ModelData } from "@/utils/types";
 
 export default function Home() {
-  const [dataModels, setDataModels] = useState([]);
+  const [dataModels, setDataModels] = useState<ModelData[]>([]);
 
   return (
     <div>

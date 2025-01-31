@@ -5,8 +5,6 @@ services:
     build: .
     ports:
       - "3232:3232"
-    volumes:
-      - .:/app
-      - /app/node_modules
-    environment:
-      - PORT=3232
+    env_file:
+      - .env
+    restart: always

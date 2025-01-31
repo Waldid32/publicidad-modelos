@@ -1,9 +1,26 @@
 "use client";
 import { searhModels } from "@/actions/searhModels";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
-export function SearchModels({ setDataModels }: any) {
+interface PropsDataModels {
+  nombreCompleto: string;
+  etnia: string;
+  zona: string;
+  idiomas: string;
+  edad: number;
+  precio: number;
+}
+
+interface SearchModelsProps {
+  setDataModels: (data: PropsDataModels[]) => void;
+}
+
+interface OpenCageResult {
+  formatted: string;
+}
+
+export function SearchModels({ setDataModels }: SearchModelsProps) {
   const [formData, setFormData] = useState({
     nombreCompleto: "",
     etnia: "",
@@ -12,7 +29,6 @@ export function SearchModels({ setDataModels }: any) {
     edad: 0,
     precio: 0,
   });
-  const [isPending, startTransition] = useTransition();
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(
     null
@@ -61,10 +77,8 @@ export function SearchModels({ setDataModels }: any) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    startTransition(async () => {
-      const result = await searhModels(formData);
-      setDataModels(result);
-    });
+    const result = await searhModels(formData);
+    setDataModels(result);
   };
 
   const fetchLocations = async (query: string) => {
@@ -81,13 +95,14 @@ export function SearchModels({ setDataModels }: any) {
 
       if (data.results) {
         const formattedSuggestions = data.results.map(
-          (result: any) => result.formatted
+          (result: OpenCageResult) => result.formatted
         );
         setSuggestions(formattedSuggestions);
       } else {
         setSuggestions([]);
       }
     } catch (error) {
+      console.log(error);
       toast.error("Error buscando ubicaciones. Intenta de nuevo.");
     }
   };

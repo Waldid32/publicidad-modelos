@@ -37,7 +37,7 @@ export default function NavBarLogin({
   };
 
   return (
-    <nav className="bg-bgPrimaryGradiante border-gray-200">
+    <nav className="bg-primary border-gray-200">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         {/* LOGO */}
         <Link

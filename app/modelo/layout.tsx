@@ -19,7 +19,7 @@ export default async function ModeloLayout({
   return (
     <>
       <NavBarLogin role={role} nombreCompleto={nombreCompleto} />
-      <main className="pt-10">{children}</main>
+      <main className="pt-10 bg-bgPrimaryGradiante">{children}</main>
     </>
   );
 }

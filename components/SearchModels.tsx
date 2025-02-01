@@ -1,6 +1,6 @@
 "use client";
 import { searhModels } from "@/actions/searhModels";
-import { ModelData } from "@/utils/types";
+import { ModelData } from "@/types/types";
 import { useState } from "react";
 import { toast } from "sonner";
 

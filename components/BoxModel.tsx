@@ -1,4 +1,4 @@
-import { ModelData } from "@/utils/types";
+import { ModelData } from "@/types/types";
 import Image from "next/image";
 
 interface BoxModelProps {

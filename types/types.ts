@@ -1,9 +1,11 @@
 export interface ModelData {
   nombreCompleto: string;
-  edad: string;
+  edad: number;
   descripcion: string;
   etnia: string;
   zona: string;
+  multimedias: string[];
+  numeroContacto: string;
 }
 
 export interface DataModels {

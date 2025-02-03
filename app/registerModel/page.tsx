@@ -60,7 +60,6 @@ export default function RegisterModel() {
   ) => {
     const { name, value } = e.target;
 
-    // Forzar a minúsculas si es el campo "nombreUsuario"
     if (name === "nombreUsuario") {
       setFormData({
         ...formData,
@@ -74,9 +73,19 @@ export default function RegisterModel() {
     }
 
     if (name === "zona") {
-      if (debounceTimer) clearTimeout(debounceTimer); // Limpiar el temporizador previo
-      const timer = setTimeout(() => fetchLocations(value), 500); // Consultar después de 500ms
-      setDebounceTimer(timer); // Guardar el nuevo temporizador
+      // Cancelar el temporizador anterior (si existe)
+      if (debounceTimer) clearTimeout(debounceTimer);
+
+      // Establecer un nuevo temporizador
+      const timer = setTimeout(() => {
+        if (value.trim().length >= 3) {
+          fetchLocations(value); // Llamar solo si hay al menos 3 caracteres
+        } else {
+          setSuggestions([]); // Vaciar sugerencias si es menor a 3 caracteres
+        }
+      }, 500); // Retraso de 500ms
+
+      setDebounceTimer(timer);
     }
   };
 
@@ -112,28 +121,18 @@ export default function RegisterModel() {
   };
 
   const fetchLocations = async (query: string) => {
-    if (!query || query.trim().length < 3) {
-      setSuggestions([]); // No buscar si la consulta es demasiado corta
-      return;
-    }
-
     try {
-      const response = await fetch(
-        `https://api.opencagedata.com/geocode/v1/json?q=${query}&key=${process.env.NEXT_PUBLIC_OPENCAGE_API_KEY}&limit=50&countrycode=es&language=es`
-      );
-      const data: OpenCageResponse = await response.json();
+      if (query.trim().length < 3) return; // Validar nuevamente antes de realizar la solicitud
 
-      if (data.results) {
-        const formattedSuggestions = data.results.map(
-          (result: OpenCageResult) => result.formatted
-        );
-        setSuggestions(formattedSuggestions);
-      } else {
-        setSuggestions([]);
+      const response = await fetch(`/api/locations?query=${query}`);
+      if (!response.ok) {
+        throw new Error("Error al consultar la API de ubicaciones.");
       }
-    } catch (error) {
-      console.error("Error fetching locations:", error); // Utilizar 'error' para depuración
-      toast.error("Error buscando ubicaciones. Intenta de nuevo.");
+
+      const data = await response.json();
+      setSuggestions(data); // Actualizar sugerencias
+    } catch {
+      setSuggestions([]); // Vaciar sugerencias si ocurre un error
     }
   };
 

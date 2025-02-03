@@ -1,5 +1,8 @@
+"use client";
+
 import { ModelData } from "@/types/types";
 import Image from "next/image";
+import Link from "next/link";
 
 interface BoxModelProps {
   dataModels: ModelData[];
@@ -10,50 +13,77 @@ export function BoxModel({ dataModels }: BoxModelProps) {
   const modelsArray = Array.isArray(dataModels) ? dataModels : [];
 
   return (
-    <section className="bg-white dark:bg-gray-900">
-      <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
-        <div className="grid gap-8 mb-6 lg:mb-16 md:grid-cols-2">
-          {modelsArray.length > 0 ? (
-            modelsArray.map((data: ModelData, index: number) => (
-              <div
-                className="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-800 dark:border-gray-700"
-                key={index}
-              >
-                <a href="#">
-                  <Image
-                    width={240}
-                    height={170}
-                    className="w-full rounded-lg sm:rounded-none sm:rounded-l-lg"
-                    src="/prueba.jpg"
-                    alt="Bonnie Avatar"
-                  />
-                </a>
-                <div className="p-5">
-                  <h3 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                    <a href="#">{data.nombreCompleto}</a>
-                  </h3>
-                  <span className="text-gray-500 dark:text-gray-400">
-                    <strong>Edad:</strong> {data.edad}
-                  </span>
-                  <span className="text-gray-500 dark:text-gray-400">
-                    {data.etnia}
-                  </span>
-                  <p className="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">
-                    {data.descripcion ?? "Descripción no disponible."}
-                  </p>
-                  <span className="text-gray-500 dark:text-gray-400">
-                    {data.zona}
-                  </span>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-500 dark:text-gray-400">
-              No hay datos disponibles.
+    <section className="grid sm:grid-cols-2 justify-center items-center gap-10 mx-auto py-10 px-5 bg-white">
+      {modelsArray.map((data: ModelData, index: number) => (
+        <div
+          key={index}
+          className="
+            grid grid-cols-1 md:grid-cols-2
+            border-2 border-primary rounded-lg p-4
+            gap-4 sm:w-[750px]
+          "
+        >
+          {/* Columna imagen */}
+          <div className="flex justify-center items-center">
+            <Image
+              src={data.multimedias[0]}
+              alt={data.nombreCompleto}
+              width={170}
+              height={240}
+              className="
+                rounded-2xl
+                object-cover
+                w-[170px] h-[240px]
+              "
+            />
+          </div>
+
+          {/* Columna información */}
+          <div className="flex flex-col w-full">
+            {/* Nombre + Edad */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+              <h3 className="text-xl font-bold tracking-tight text-gray-900">
+                {data.nombreCompleto}
+              </h3>
+              <span className="text-black">
+                <strong>Edad:</strong> {data.edad} Años
+              </span>
+            </div>
+
+            {/* Descripción con truncado */}
+            <p
+              className="
+                font-light text-gray-500
+                line-clamp-3
+                overflow-hidden
+                py-5
+              "
+            >
+              {data.descripcion ?? "Descripción no disponible."}
             </p>
-          )}
+
+            {/* Zona */}
+            <span className="text-gray-500 font-semibold py-10">
+              {data.zona}
+            </span>
+            {/* WhatsApp */}
+            <div className="flex items-center gap-2 mt-3">
+              <Image
+                src={"/whatsapp.svg"}
+                width={30}
+                height={30}
+                alt="Icon WhatsApp"
+              />
+              <Link
+                href={`https://wa.me/${data.numeroContacto}?text=Hola,%20vengo%20de%20ModelMatch.`}
+                className="font-semibold text-lg"
+              >
+                {data.numeroContacto}
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
+      ))}
     </section>
   );
 }

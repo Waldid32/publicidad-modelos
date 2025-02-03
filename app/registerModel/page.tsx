@@ -17,14 +17,6 @@ interface FormData {
   ciudad: string;
 }
 
-interface OpenCageResult {
-  formatted: string;
-}
-
-interface OpenCageResponse {
-  results: OpenCageResult[];
-}
-
 export default function RegisterModel() {
   const [formData, setFormData] = useState<FormData>({
     nombreCompleto: "",

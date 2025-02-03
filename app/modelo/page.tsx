@@ -22,7 +22,7 @@ export default async function Modelos() {
   const dataModel: DataModels = await res.json();
 
   return (
-    <div className="flex flex-col gap-10 justify-center items-center py-20">
+    <div className="flex flex-col gap-10 justify-center items-center">
       <PerfilPublico dataModel={dataModel} />
     </div>
   );

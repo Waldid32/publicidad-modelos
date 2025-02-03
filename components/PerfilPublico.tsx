@@ -10,7 +10,7 @@ interface PerfilPublicoProps {
 
 export function PerfilPublico({ dataModel }: PerfilPublicoProps) {
   return (
-    <div className="flex flex-col gap-10 justify-center items-center py-20">
+    <div className="flex flex-col gap-10 justify-center items-center pt-5 pb-14">
       <h1 className="font-bold text-xl md:text-2xl">Mi PERFIL PUBLICO</h1>
       {/* SECTION IMAGENES */}
       <div>

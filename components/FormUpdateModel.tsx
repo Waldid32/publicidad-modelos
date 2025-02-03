@@ -18,6 +18,8 @@ interface FormUpdateModelProps {
     precioHora: string;
     rol: string;
     descripcion: string;
+    suscripcionBasica: boolean;
+    suscripcionPremiun: boolean;
   };
 }
 
@@ -147,6 +149,14 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
         fd.append("multimedias", media);
       }
     });
+
+    // Verificamos si el usuario NO tiene suscripción básica:
+    if (!dataModel.suscripcionBasica) {
+      toast.error(
+        "Debes tener una suscripción básica activa para publicar tu perfil."
+      );
+      return;
+    }
 
     try {
       const response = await updateModelAction(nombreUsuario, fd);

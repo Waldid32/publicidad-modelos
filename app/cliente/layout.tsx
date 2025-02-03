@@ -2,7 +2,7 @@ import NavBarLogin from "@/components/NavBarLogin";
 import { cookies } from "next/headers";
 
 export const metadata = {
-  title: "Sección Modelos",
+  title: "Interfaz Clientes",
 };
 
 export default async function ModeloLayout({
@@ -10,7 +10,6 @@ export default async function ModeloLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Este componente es un Server Component por defecto en Next 13/14
   const cookieStore = await cookies();
 
   const role = cookieStore.get("role")?.value || "";
@@ -19,7 +18,7 @@ export default async function ModeloLayout({
   return (
     <>
       <NavBarLogin role={role} nombreCompleto={nombreCompleto} />
-      <main className="pt-10 bg-bgPrimaryGradiante">{children}</main>
+      <main className="bg-slate-400">{children}</main>
     </>
   );
 }

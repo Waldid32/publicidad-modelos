@@ -1,3 +1,9 @@
+/* 1) Poner la importación de flowbite al comienzo */
+@import "flowbite/dist/flowbite.css";
+
+/* 2) Después vienen las directivas de Tailwind */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Tu CSS adicional, si lo hubiera */

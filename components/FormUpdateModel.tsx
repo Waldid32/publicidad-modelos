@@ -18,6 +18,8 @@ interface FormUpdateModelProps {
     precioHora: string;
     rol: string;
     descripcion: string;
+    suscripcionBasica: boolean;
+    suscripcionPremiun: boolean;
   };
 }
 
@@ -148,6 +150,14 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
       }
     });
 
+    // Verificamos si el usuario NO tiene suscripción básica:
+    if (!dataModel.suscripcionBasica) {
+      toast.error(
+        "Debes tener una suscripción básica activa para publicar tu perfil."
+      );
+      return;
+    }
+
     try {
       const response = await updateModelAction(nombreUsuario, fd);
       if (response.success) {
@@ -170,44 +180,26 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center gap-10 w-full">
+    <div className="flex flex-col justify-center items-center gap-10 w-full pt-5 pb-10">
       <h1 className="font-bold text-lg">EDITAR PERFIL</h1>
       <form
         onSubmit={handleSubmit}
         className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full px-10 lg:px-52"
       >
-        {/* descripcion */}
-        <div className="relative z-0 w-full mb-5 group">
-          <textarea
-            name="descripcion"
-            id="descripcion"
-            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2"
-            value={formData.descripcion}
-            onChange={handleChange}
-            required
-          ></textarea>
-          <label
-            htmlFor="descripcion"
-            className="peer-focus:font-medium text-sm text-gray-500"
-          >
-            Presentación de modelo
-          </label>
-        </div>
-
         {/* numeroContacto */}
         <div className="relative z-0 w-full mb-5 group">
           <input
             type="tel"
             name="numeroContacto"
             id="numeroContacto"
-            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2"
+            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2 rounded-lg"
             value={formData.numeroContacto}
             onChange={handleChange}
             required
           />
           <label
             htmlFor="numeroContacto"
-            className="peer-focus:font-medium text-sm text-gray-500"
+            className="peer-focus:font-medium text-sm text-black font-semibold"
           >
             Número de contacto
           </label>
@@ -219,14 +211,14 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
             type="number"
             name="edad"
             id="edad"
-            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2"
+            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2 rounded-lg"
             value={formData.edad}
             onChange={handleChange}
             required
           />
           <label
             htmlFor="edad"
-            className="peer-focus:font-medium text-sm text-gray-500"
+            className="peer-focus:font-medium text-sm text-black font-semibold"
           >
             Edad
           </label>
@@ -238,14 +230,14 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
             type="number"
             name="precioHora"
             id="precioHora"
-            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2"
+            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2 rounded-lg"
             value={formData.precioHora}
             onChange={handleChange}
             required
           />
           <label
             htmlFor="precioHora"
-            className="peer-focus:font-medium text-sm text-gray-500"
+            className="peer-focus:font-medium text-sm text-black font-semibold"
           >
             $ Precio por Hora
           </label>
@@ -257,7 +249,7 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
             multiple
             name="idiomas"
             id="idiomas"
-            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2"
+            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2 rounded-lg"
             value={formData.idiomas} // <-- formData.idiomas es un array
             onChange={handleChange}
           >
@@ -269,7 +261,7 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
           </select>
           <label
             htmlFor="idiomas"
-            className="peer-focus:font-medium text-sm text-gray-500"
+            className="peer-focus:font-medium text-sm text-black font-semibold"
           >
             Idiomas
           </label>
@@ -281,15 +273,33 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
             type="text"
             name="duracionesAdicionales"
             id="duracionesAdicionales"
-            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2"
+            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2 rounded-lg"
             value={formData.duracionesAdicionales}
             onChange={handleChange}
           />
           <label
             htmlFor="duracionesAdicionales"
-            className="peer-focus:font-medium text-sm text-gray-500"
+            className="peer-focus:font-medium text-sm text-black font-semibold"
           >
             Duraciones Adicionales / de servicios
+          </label>
+        </div>
+
+        {/* descripcion */}
+        <div className="relative z-0 w-full mb-5 group">
+          <textarea
+            name="descripcion"
+            id="descripcion"
+            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2 rounded-lg h-32"
+            value={formData.descripcion}
+            onChange={handleChange}
+            required
+          ></textarea>
+          <label
+            htmlFor="descripcion"
+            className="peer-focus:font-medium text-sm text-black font-semibold"
+          >
+            Presentación de modelo
           </label>
         </div>
 
@@ -350,13 +360,12 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
             ))}
           </div>
         </div>
-        <div></div>
 
         {/* Botón submit */}
         <div>
           <button
             type="submit"
-            className="text-white bg-blue-700 hover:bg-blue-800 
+            className="text-white bg-segundary hover:bg-primary 
               focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium 
               rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           >

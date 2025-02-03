@@ -36,11 +36,25 @@ export async function loginAction({
       httpOnly: true,
     });
 
+    (await cookieStore).set("suscripcionBasica", data.user.suscripcionBasica, {
+      httpOnly: true,
+    });
+
+    (await cookieStore).set(
+      "suscripcionPremiun",
+      data.user.suscripcionPremiun,
+      {
+        httpOnly: true,
+      }
+    );
+
     return {
       success: true,
       role: data.user.rol,
       username: data.user.nombreUsuario,
       nombreCompleto: data.user.nombreCompleto,
+      suscripcionBasica: data.user.suscripcionBasica,
+      suscripcionPremiun: data.user.suscripcionPremiun,
     };
   } catch (error) {
     return { success: false, message: "Credenciales incorrectas" };

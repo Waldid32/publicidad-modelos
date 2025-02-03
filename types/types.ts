@@ -27,3 +27,25 @@ export interface DataModels {
   rol: string;
   zona: string;
 }
+
+interface OpenCageGeometry {
+  lat: number;
+  lng: number;
+}
+
+interface OpenCageComponents {
+  city?: string;
+  state?: string;
+  country?: string;
+  formatted?: string;
+}
+
+interface OpenCageResult {
+  formatted: string;
+  components: OpenCageComponents;
+  geometry: OpenCageGeometry;
+}
+
+export interface OpenCageResponse {
+  results: OpenCageResult[];
+}

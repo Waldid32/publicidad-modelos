@@ -1,3 +1,4 @@
+import { OpenCageResponse } from "@/types/types";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -25,11 +26,10 @@ export async function GET(req: Request) {
       throw new Error("Error al llamar a la API de OpenCage.");
     }
 
-    const data = await response.json();
+    const data: OpenCageResponse = await response.json();
 
     // Formatear las sugerencias
-    const suggestions =
-      data.results?.map((result: any) => result.formatted) || [];
+    const suggestions = data.results?.map((result) => result.formatted) || [];
 
     return NextResponse.json(suggestions);
   } catch (error) {

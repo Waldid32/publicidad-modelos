@@ -1,6 +1,7 @@
 "use client";
 
 import { Carousel } from "flowbite-react";
+import Image from "next/image";
 
 export function CarouselModel({ multimedias }: { multimedias: string[] }) {
   return (
@@ -15,7 +16,7 @@ export function CarouselModel({ multimedias }: { multimedias: string[] }) {
               Tu navegador no soporta la reproducción de este video.
             </video>
           ) : (
-            <img
+            <Image
               key={index}
               src={item}
               alt={`Multimedia ${index}`}

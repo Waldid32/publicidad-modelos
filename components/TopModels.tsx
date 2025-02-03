@@ -17,7 +17,7 @@ export function TopModels() {
 
         const rawData = await response.json();
 
-        const transformedData: ModelData[] = rawData.map((item: any) => {
+        const transformedData: ModelData[] = rawData.map((item: ModelData) => {
           return {
             nombreCompleto: item.nombreCompleto,
             edad: item.edad,

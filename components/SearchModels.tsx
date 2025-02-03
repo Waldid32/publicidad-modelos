@@ -93,8 +93,7 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
       } else {
         setSuggestions([]);
       }
-    } catch (error) {
-      console.log(error);
+    } catch {
       toast.error("Error buscando ubicaciones. Intenta de nuevo.");
     }
   };

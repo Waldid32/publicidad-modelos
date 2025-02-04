@@ -5,9 +5,7 @@ export default function Home() {
   return (
     <div>
       <Navbar />
-      <div>
-        <TopModels />
-      </div>
+      <div></div>
     </div>
   );
 }

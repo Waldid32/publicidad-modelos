@@ -9,7 +9,7 @@ export default async function ProfilePageModel() {
     return <div>No hay usuario en cookies</div>;
   }
 
-  const res = await fetch(`http://localhost:3000/users/${nombreUsuario}`, {
+  const res = await fetch(`${process.env.API_URL}/users/${nombreUsuario}`, {
     method: "GET",
     cache: "no-store",
   });

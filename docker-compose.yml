@@ -2,9 +2,27 @@ version: '3'
 
 services:
   web:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "3232:3232"
     env_file:
       - .env
+    environment:
+      - NODE_ENV=production
+      - PORT=3232
     restart: always
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3232"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    volumes:
+      - .next:/app/.next
+      - node_modules:/app/node_modules

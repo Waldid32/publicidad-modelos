@@ -7,16 +7,26 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: process.env.NODE_ENV === "development" ? "http" : "https",
+        protocol: process.env.NODE_ENV === "development" ? "http" : "http",
         hostname:
           process.env.NODE_ENV === "development"
             ? "localhost"
-            : process.env.PRODUCTION_HOST ||
-              "your-default-production-domain.com",
-        port: process.env.NODE_ENV === "development" ? "3000" : "",
+            : (process.env.PRODUCTION_HOST || "localhost").replace(
+                /^https?:\/\//,
+                ""
+              ),
+        port: process.env.NODE_ENV === "development" ? "3232" : "3232",
         pathname: "/uploads/**",
       },
     ],
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: `${process.env.API_URL}/api/:path*`,
+      },
+    ];
   },
   experimental: {
     serverActions: {

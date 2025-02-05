@@ -11,18 +11,21 @@ export async function registerClienteAction(formData: {
   confirmarPassword: string;
 }) {
   try {
+    // Convertir nombreUsuario a minúsculas
+    const sanitizedFormData = {
+      ...formData,
+      nombreUsuario: formData.nombreUsuario.toLowerCase(),
+      rol: "cliente", // Asegura que el rol sea siempre "cliente"
+    };
+
     // Llamada al endpoint de registro
     await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/users/register/cliente`,
-      {
-        ...formData,
-        rol: "cliente", // Asegura que el rol sea siempre "cliente"
-      }
+      sanitizedFormData
     );
 
     return { success: true };
   } catch (error: any) {
-    console.log(error);
     return {
       success: false,
       message: error.response?.data?.message || "Error al registrar",

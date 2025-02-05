@@ -12,10 +12,13 @@ export async function loginAction({
 }) {
   try {
     // Llamada al endpoint de autenticación
-    const { data } = await axios.post(`${process.env.API_URL}/auth/login`, {
-      nombreUsuario,
-      password,
-    });
+    const { data } = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+      {
+        nombreUsuario,
+        password,
+      }
+    );
 
     // Almacena el token, el rol y el nombreUsuario en cookies
     const cookieStore = cookies();

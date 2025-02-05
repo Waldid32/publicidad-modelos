@@ -11,12 +11,16 @@ export async function registerModelsAction(formData: {
   confirmarPassword: string;
 }) {
   try {
+    // Convertir nombreUsuario a minúsculas
+    const sanitizedFormData = {
+      ...formData,
+      nombreUsuario: formData.nombreUsuario.toLowerCase(),
+      rol: "modelo", // Asegura que el rol sea siempre "Modelo"
+    };
+
     await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/users/register/modelo`,
-      {
-        ...formData,
-        rol: "modelo",
-      }
+      sanitizedFormData
     );
 
     return { success: true };

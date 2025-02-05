@@ -11,11 +11,12 @@ export async function loginAction({
   password: string;
 }) {
   try {
+    let nombreUsuarioMin: string = nombreUsuario.toLowerCase();
     // Llamada al endpoint de autenticación
     const { data } = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
       {
-        nombreUsuario,
+        nombreUsuarioMin,
         password,
       }
     );

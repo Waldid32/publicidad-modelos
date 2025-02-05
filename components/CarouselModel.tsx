@@ -20,7 +20,8 @@ export function CarouselModel({ multimedias }: { multimedias: string[] }) {
               key={index}
               src={item}
               alt={`Multimedia ${index}`}
-              className="w-full h-full"
+              className="w-full h-full object-contain"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           );
         })}

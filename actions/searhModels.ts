@@ -10,7 +10,7 @@ export async function searhModels(formData: {
 }) {
   try {
     const result = await axios.post(
-      `${process.env.API_URL}/users/models/filter`,
+      `${process.env.NEXT_PUBLIC_API_URL}/users/models/filter`,
       {
         ...formData,
       }

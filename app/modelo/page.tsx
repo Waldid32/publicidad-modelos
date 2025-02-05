@@ -10,10 +10,13 @@ export default async function Modelos() {
     return <div>No hay usuario en cookies</div>;
   }
 
-  const res = await fetch(`${process.env.API_URL}/users/${nombreUsuario}`, {
-    method: "GET",
-    cache: "no-store",
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/users/${nombreUsuario}`,
+    {
+      method: "GET",
+      cache: "no-store",
+    }
+  );
 
   if (!res.ok) {
     return <div>Error al obtener datos</div>;

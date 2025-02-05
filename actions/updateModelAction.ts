@@ -7,7 +7,7 @@ export async function updateModelAction(
 ) {
   try {
     const result = await axios.patch(
-      `${process.env.API_URL}/users/models/${nombreUsuario}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/users/models/${nombreUsuario}`,
       formData,
       {
         headers: {

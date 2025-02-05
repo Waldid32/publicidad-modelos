@@ -21,9 +21,3 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-    volumes:
-      - .next:/app/.next
-      - node_modules:/app/node_modules
-
-volumes:
-  node_modules:

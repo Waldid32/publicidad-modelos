@@ -11,10 +11,13 @@ export async function registerModelsAction(formData: {
   confirmarPassword: string;
 }) {
   try {
-    await axios.post(`${process.env.API_URL}/users/register/modelo`, {
-      ...formData,
-      rol: "modelo",
-    });
+    await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/register/modelo`,
+      {
+        ...formData,
+        rol: "modelo",
+      }
+    );
 
     return { success: true };
   } catch (error: any) {

@@ -16,7 +16,7 @@ export async function loginAction({
     const { data } = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
       {
-        nombreUsuarioMin,
+        nombreUsuario: nombreUsuarioMin,
         password,
       }
     );
@@ -61,6 +61,7 @@ export async function loginAction({
       suscripcionPremiun: data.user.suscripcionPremiun,
     };
   } catch (error) {
+    console.log(error);
     return { success: false, message: "Credenciales incorrectas" };
   }
 }

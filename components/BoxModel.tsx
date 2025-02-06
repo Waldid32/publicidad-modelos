@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { ModelData } from "@/types/types";
-import Image from "next/image";
-import Link from "next/link";
+import { ModelData } from '@/types/types';
+import Image from 'next/image';
+import Link from 'next/link';
 
 interface BoxModelProps {
   dataModels: ModelData[];
@@ -10,18 +10,16 @@ interface BoxModelProps {
 
 export function BoxModel({ dataModels }: BoxModelProps) {
   // Verificar que sea array antes de mapear
-  const modelsArray = Array.isArray(dataModels) ? dataModels : [];
+  const modelsArray = Array.isArray(dataModels)
+    ? dataModels
+    : [];
 
   return (
-    <section className="grid sm:grid-cols-2 justify-center items-center gap-10 mx-auto py-10 px-5 bg-white">
+    <section className="grid grid-cols-1 lg:grid-cols-2 justify-center items-center  gap-10 py-10 px-5 bg-white w-full">
       {modelsArray.map((data: ModelData, index: number) => (
         <div
           key={index}
-          className="
-            grid grid-cols-1 md:grid-cols-2
-            border-2 border-primary rounded-lg p-4
-            gap-4 sm:w-[750px]
-          "
+          className="grid grid-cols-1 lg:grid-cols-2 border-2 border-primary rounded-lg p-4 gap-4 lg:w-[550px] w-full"
         >
           {/* Columna imagen */}
           <div className="flex justify-center items-center">
@@ -33,8 +31,9 @@ export function BoxModel({ dataModels }: BoxModelProps) {
               className="
                 rounded-2xl
                 object-cover
-                w-[170px] h-[240px]
+                w-[250px] h-[250px]
               "
+              unoptimized
             />
           </div>
 
@@ -59,7 +58,8 @@ export function BoxModel({ dataModels }: BoxModelProps) {
                 py-5
               "
             >
-              {data.descripcion ?? "Descripción no disponible."}
+              {data.descripcion ??
+                'Descripción no disponible.'}
             </p>
 
             {/* Zona */}
@@ -69,7 +69,7 @@ export function BoxModel({ dataModels }: BoxModelProps) {
             {/* WhatsApp */}
             <div className="flex items-center gap-2 mt-3">
               <Image
-                src={"/whatsapp.svg"}
+                src={'/whatsapp.svg'}
                 width={30}
                 height={30}
                 alt="Icon WhatsApp"

@@ -49,10 +49,13 @@ export default function Login() {
                   name="nombreUsuario"
                   id="nombreUsuario"
                   value={nombreUsuario}
-                  onChange={(e) => setNombreUsuario(e.target.value)}
+                  onChange={(e) =>
+                    setNombreUsuario(e.target.value.toLowerCase())
+                  }
                   className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 lowercase"
                   placeholder="Nombre de usuario"
                   required
+                  autoCapitalize="none"
                 />
               </div>
               <div>
@@ -68,6 +71,8 @@ export default function Login() {
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 "
                   required
+                  autoCapitalize="none"
+                  autoCorrect="off"
                 />
               </div>
               <div className="flex items-center justify-between gap-5">

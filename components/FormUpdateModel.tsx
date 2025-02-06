@@ -335,10 +335,15 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
                 ) : // Render image preview
                 typeof media === "string" ? (
                   <Image
-                    src={media}
+                    src={
+                      media.startsWith("http")
+                        ? media
+                        : `http://${process.env.NEXT_PUBLIC_API_URL}${media}`
+                    }
                     alt={`Media ${index + 1}`}
                     width={160}
                     height={160}
+                    unoptimized
                   />
                 ) : (
                   <Image
@@ -347,6 +352,7 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
                     className="w-20 h-20 object-cover"
                     width={160}
                     height={160}
+                    unoptimized
                   />
                 )}
                 <button

@@ -1,5 +1,6 @@
 export interface ModelData {
   nombreCompleto: string;
+  nombreUsuario: string;
   edad: number;
   descripcion: string;
   etnia: string;

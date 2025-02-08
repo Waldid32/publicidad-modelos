@@ -19,7 +19,10 @@ export function CarouselModel({ multimedias }: { multimedias: string[] }) {
             <Image
               src={item}
               alt={`Multimedia ${index}`}
-              className="w-full h-full object-contain"
+              className="w-full h-full object-fill rounded-2xl"
+              width={10}
+              height={30}
+              key={index}
               unoptimized
             />
           );

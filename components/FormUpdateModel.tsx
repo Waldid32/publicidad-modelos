@@ -20,6 +20,7 @@ interface FormUpdateModelProps {
     descripcion: string;
     suscripcionBasica: boolean;
     suscripcionPremiun: boolean;
+    fechaNacimiento: string;
   };
 }
 
@@ -29,9 +30,24 @@ const MAX_VIDEO_SIZE = 20 * 1024 * 1024; // 20MB
 const ALLOWED_VIDEO_TYPES = ["video/mp4"];
 
 export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
+
+
+  const calculateAge = (birthDate: string): number => {
+    const birth = new Date(birthDate);
+    const today = new Date();
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+      age--; // Ajustar si aún no ha pasado su cumpleaños este año
+    }
+
+    return age;
+  };
+
   const [formData, setFormData] = useState<{
     duracionesAdicionales: string;
-    edad: string;
+    edad: number;
     idiomas: string[];
     numeroContacto: string;
     precioHora: string;
@@ -39,7 +55,7 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
     multimedias: (string | File)[];
   }>({
     duracionesAdicionales: dataModel.duracionesAdicionales || "",
-    edad: dataModel.edad?.toString() || "",
+    edad: calculateAge(dataModel.fechaNacimiento),
     idiomas: Array.isArray(dataModel.idiomas) ? dataModel.idiomas : [],
     numeroContacto: dataModel.numeroContacto || "",
     precioHora: dataModel.precioHora?.toString() || "",
@@ -132,7 +148,7 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
 
     const fd = new FormData();
 
-    fd.append("edad", formData.edad);
+    fd.append("edad", formData.edad.toString());
     fd.append("precioHora", formData.precioHora);
     fd.append("descripcion", formData.descripcion);
     fd.append("duracionesAdicionales", formData.duracionesAdicionales);
@@ -148,11 +164,8 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
       }
     });
 
-    // Verificamos si el usuario NO tiene suscripción básica:
     if (!dataModel.suscripcionBasica) {
-      toast.error(
-        "Debes tener una suscripción básica activa para publicar tu perfil."
-      );
+      toast.error("Debes tener una suscripción básica activa para publicar tu perfil.");
       return;
     }
 
@@ -169,6 +182,7 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
       toast.error("Error al actualizar la información");
     }
   };
+
 
   const isVideo = (file: string | File) => {
     if (typeof file === "string") {
@@ -209,16 +223,15 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
             type="number"
             name="edad"
             id="edad"
-            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2 rounded-lg"
+            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2 rounded-lg bg-gray-100 cursor-not-allowed"
             value={formData.edad}
-            onChange={handleChange}
-            required
+            readOnly
           />
           <label
             htmlFor="edad"
             className="peer-focus:font-medium text-sm text-black font-semibold"
           >
-            Edad
+            Edad (calculada automáticamente)
           </label>
         </div>
 

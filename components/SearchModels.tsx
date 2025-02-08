@@ -13,18 +13,22 @@ interface OpenCageResult {
 }
 
 export function SearchModels({ setDataModels }: SearchModelsProps) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    nombreCompleto: string;
+    etnia: string;
+    zona: string;
+    idiomas: string;
+    edad: number | "";
+    precio: number | null;
+  }>({
     nombreCompleto: "",
     etnia: "",
     zona: "",
     idiomas: "",
-    edad: 0,
-    precio: 0,
+    edad: "",
+    precio: null,
   });
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(
-    null
-  );
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -32,46 +36,21 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
     const { name, value } = e.target;
 
     if (name === "precio") {
-      // Procesar el precio
-      const rawValue = value.replace(/[^\d.,]/g, "").replace(",", ".");
-      const numericValue = parseFloat(rawValue);
-
-      if (!isNaN(numericValue) && numericValue >= 0) {
-        setFormData({
-          ...formData,
-          [name]: numericValue, // Guardar solo el número puro
-        });
-      } else {
-        setFormData({
-          ...formData,
-          [name]: 0, // Si el valor es inválido, guardar 0
-        });
-      }
+      const numericValue = parseFloat(value.replace(/[^\d.]/g, ""));
+      setFormData({
+        ...formData,
+        [name]: !isNaN(numericValue) ? numericValue : null,
+      });
     } else if (name === "edad") {
-      // Validar edad (debe estar entre 18 y 90)
-      const numericValue = parseInt(value, 10);
-      if (numericValue >= 18 && numericValue <= 90) {
-        setFormData({ ...formData, [name]: numericValue });
-      }
+      setFormData({
+        ...formData,
+        [name]: value === "" ? "" : Number(value),
+      });
     } else {
-      // Manejo normal para otros campos
       setFormData({ ...formData, [name]: value });
-
-      // Activar debounce solo para el campo "zona"
-      if (name === "zona") {
-        if (debounceTimer) clearTimeout(debounceTimer);
-        const timer = setTimeout(() => fetchLocations(value), 1000);
-        setDebounceTimer(timer);
-      }
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const result = await searhModels(formData);
-    setDataModels(result);
-  };
 
   const fetchLocations = async (query: string) => {
     if (!query || query.trim().length < 3) {
@@ -102,6 +81,32 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
     setFormData({ ...formData, zona: suggestion });
     setSuggestions([]);
   };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const filters = {
+      nombreCompleto: formData.nombreCompleto,
+      etnia: formData.etnia,
+      zona: formData.zona,
+      idiomas: formData.idiomas,
+      edad: formData.edad ? Number(formData.edad) : undefined,
+      precio: formData.precio ? Number(formData.precio) : undefined,
+    };
+
+    try {
+      const result = await searhModels(filters);
+      if (!Array.isArray(result)) {
+        return toast.error("No se encontraron modelos o hubo un error.");
+      }
+
+      setDataModels(result);
+    } catch {
+      setDataModels([]);
+      toast.error("No se encontraron modelos o hubo un error.");
+    }
+  };
+
 
   return (
     <form
@@ -255,7 +260,7 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
           type="number"
           name="precio"
           id="precio"
-          value={formData.precio}
+          value={formData.precio ?? ""}
           onChange={handleChange}
           className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block p-2.5 w-full lg:w-full"
         />
@@ -265,7 +270,7 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
         <button
           type="submit"
           className="text-white bg-segundary hover:bg-primary hover:border-2 hover:border-segundary hover:text-black focus:ring-2 focus:outline-none focus:ring-primary font-medium rounded-lg text-sm px-5 py-2.5 text-center w-72 lg:w-32"
-          //   disabled={isPending}
+        //   disabled={isPending}
         >
           Buscar
         </button>

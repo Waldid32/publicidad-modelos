@@ -1,6 +1,5 @@
 "use client";
 
-import { BoxModel } from "@/components/BoxModel";
 import { SearchModels } from "@/components/SearchModels";
 import { TopModels } from "@/components/TopModels";
 import { ModelData } from "@/types/types";
@@ -20,7 +19,6 @@ export default function Cliente() {
         </div>
       ) : (
         <div className="flex flex-col justify-center items-start gap-6 py-10 px-5 bg-white">
-          <BoxModel dataModels={dataModels} />
         </div>
       )}
     </section>

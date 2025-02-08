@@ -90,8 +90,7 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
         }
         if (file.size > MAX_IMAGE_SIZE) {
           toast.error(
-            `La imagen excede el tamaño permitido (${
-              MAX_IMAGE_SIZE / 1024 / 1024
+            `La imagen excede el tamaño permitido (${MAX_IMAGE_SIZE / 1024 / 1024
             } MB)`
           );
           return false;
@@ -103,8 +102,7 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
         }
         if (file.size > MAX_VIDEO_SIZE) {
           toast.error(
-            `El video excede el tamaño permitido (${
-              MAX_VIDEO_SIZE / 1024 / 1024
+            `El video excede el tamaño permitido (${MAX_VIDEO_SIZE / 1024 / 1024
             } MB)`
           );
           return false;
@@ -333,28 +331,28 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
                     controls
                   />
                 ) : // Render image preview
-                typeof media === "string" ? (
-                  <Image
-                    src={
-                      media.startsWith("http")
-                        ? media
-                        : `http://${process.env.NEXT_PUBLIC_API_URL}${media}`
-                    }
-                    alt={`Media ${index + 1}`}
-                    width={160}
-                    height={160}
-                    unoptimized
-                  />
-                ) : (
-                  <Image
-                    src={URL.createObjectURL(media)}
-                    alt={`Nueva media ${index + 1}`}
-                    className="w-20 h-20 object-cover"
-                    width={160}
-                    height={160}
-                    unoptimized
-                  />
-                )}
+                  typeof media === "string" ? (
+                    <Image
+                      src={
+                        media.startsWith("http")
+                          ? media
+                          : `http://${process.env.NEXT_PUBLIC_API_URL}${media}`
+                      }
+                      alt={`Media ${index + 1}`}
+                      width={160}
+                      height={160}
+                      unoptimized
+                    />
+                  ) : (
+                    <Image
+                      src={URL.createObjectURL(media)}
+                      alt={`Nueva media ${index + 1}`}
+                      className="w-20 h-20 object-cover"
+                      width={160}
+                      height={160}
+                      unoptimized
+                    />
+                  )}
                 <button
                   type="button"
                   onClick={() => handleRemoveMedia(index)}

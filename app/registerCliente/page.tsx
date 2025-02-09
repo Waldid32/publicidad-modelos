@@ -56,7 +56,6 @@ export default function RegisterCliente() {
 
     startTransition(async () => {
       const result = await registerClienteAction(formData);
-      console.log({ result });
 
       if (result.success) {
         toast.success("Registro exitoso. Ahora puedes iniciar sesión.");

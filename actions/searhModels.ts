@@ -17,7 +17,6 @@ export async function searhModels(formData: {
         ...formData,
       }
     );
-    console.log(result)
     return result.data;
   } catch (error: any) {
     return {

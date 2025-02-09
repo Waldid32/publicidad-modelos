@@ -1,4 +1,5 @@
 export interface ModelData {
+  id: string;
   nombreCompleto: string;
   nombreUsuario: string;
   edad: number;

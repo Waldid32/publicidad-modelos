@@ -11,7 +11,7 @@ export async function loginAction({
   password: string;
 }) {
   try {
-    let nombreUsuarioMin: string = nombreUsuario.toLowerCase();
+    const nombreUsuarioMin = nombreUsuario.toLowerCase();
     // Llamada al endpoint de autenticación
     const { data } = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
@@ -21,47 +21,48 @@ export async function loginAction({
       }
     );
 
-    // Almacena el token, el rol y el nombreUsuario en cookies
-    const cookieStore = cookies();
+    // Almacena el token y el ID en cookies
+    const cookieStore = await cookies();
 
-    (await cookieStore).set("access_token", data.access_token, {
+    cookieStore.set("access_token", data.access_token, {
       httpOnly: true,
+      path: "/",
     });
 
-    (await cookieStore).set("role", data.user.rol, {
+    cookieStore.set("userId", data.user.id, {
       httpOnly: true,
+      path: "/",
     });
 
-    (await cookieStore).set("nombreUsuario", data.user.nombreUsuario, {
+    cookieStore.set("role", data.user.rol, {
       httpOnly: true,
+      path: "/",
     });
-
-    (await cookieStore).set("nombreCompleto", data.user.nombreCompleto, {
+    cookieStore.set("nombreUsuario", data.user.nombreUsuario, {
       httpOnly: true,
+      path: "/",
     });
-
-    (await cookieStore).set("suscripcionBasica", data.user.suscripcionBasica, {
+    cookieStore.set("nombreCompleto", data.user.nombreCompleto, {
       httpOnly: true,
+      path: "/",
     });
-
-    (await cookieStore).set(
-      "suscripcionPremiun",
-      data.user.suscripcionPremiun,
-      {
-        httpOnly: true,
-      }
-    );
+    cookieStore.set("suscripcionBasica", data.user.suscripcionBasica, {
+      httpOnly: true,
+      path: "/",
+    });
+    cookieStore.set("suscripcionPremiun", data.user.suscripcionPremiun, {
+      httpOnly: true,
+      path: "/",
+    });
 
     return {
       success: true,
       role: data.user.rol,
+      userId: data.user.id,
       username: data.user.nombreUsuario,
       nombreCompleto: data.user.nombreCompleto,
-      suscripcionBasica: data.user.suscripcionBasica,
-      suscripcionPremiun: data.user.suscripcionPremiun,
     };
   } catch (error) {
-    console.log(error);
     return { success: false, message: "Credenciales incorrectas" };
   }
 }

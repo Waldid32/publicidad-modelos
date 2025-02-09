@@ -13,7 +13,6 @@ export async function GET() {
 
     return NextResponse.json(data);
   } catch (error) {
-    console.log(error)
     return NextResponse.json(
       { message: "Error en la consulta de las modelos, intente mas tarde!" },
       { status: 500 }

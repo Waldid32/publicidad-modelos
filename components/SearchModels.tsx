@@ -26,9 +26,11 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
     longitude: null,
   });
 
-  // Obtener la ubicación del usuario
+  const [usarUbicacion, setUsarUbicacion] = useState(true); // Nuevo estado para controlar si se usa ubicación
+
+  // Obtener la ubicación del usuario si la opción está activada
   useEffect(() => {
-    if ("geolocation" in navigator) {
+    if (usarUbicacion && "geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setUserLocation({
@@ -37,14 +39,11 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
           });
         },
         (error) => {
-          console.log(error)
           toast.error("No se pudo obtener tu ubicación.");
         }
       );
-    } else {
-      toast.error("La geolocalización no está soportada en tu navegador.");
     }
-  }, []);
+  }, [usarUbicacion]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -71,23 +70,26 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!userLocation.latitude || !userLocation.longitude) {
+    if (usarUbicacion && (!userLocation.latitude || !userLocation.longitude)) {
       return toast.error("No se ha detectado tu ubicación.");
     }
 
-    const filters = {
+    const filters: any = {
       nombreCompleto: formData.nombreCompleto,
       etnia: formData.etnia,
       idiomas: formData.idiomas,
       edad: formData.edad !== "" ? Number(formData.edad) : undefined,
       precio: formData.precio !== null ? Number(formData.precio) : undefined,
       distancia: formData.distancia,
-      ubicacion: {
+    };
+
+    if (usarUbicacion) {
+      filters.ubicacion = {
         lat: userLocation.latitude,
         lon: userLocation.longitude,
-      },
-      zona: "Cercano", // Para cumplir con la estructura de searhModels
-    };
+      };
+      filters.zona = "Cercano"; // Para cumplir con la estructura de searhModels
+    }
 
     try {
       const result = await searhModels(filters);
@@ -163,14 +165,33 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
         <select
           name="etnia"
           id="etnia"
+          value={formData.etnia}
           onChange={handleChange}
           className="bg-gray-50 border border-gray-300 text-black rounded-lg focus:ring-primary focus:border-primary block p-2.5 w-full lg:w-full"
         >
           <option value="">Selecciona una opción</option>
-          <option value="latina">Latina</option>
-          <option value="afrodescendiente">Afrodescendiente</option>
-          <option value="asiatica">Asiática</option>
-          <option value="europea">Europea</option>
+          <optgroup label="Europa">
+            <option value="occidental_europea">
+              Europea occidental (España, Francia, Italia)
+            </option>
+            <option value="este_europeo">
+              Europea del este (Rusia, Ucrania, Polonia)
+            </option>
+          </optgroup>
+          <optgroup label="Asia">
+            <option value="arabe">Árabe (Egipto, Siria, Líbano)</option>
+            <option value="kurda">Kurda (Turquía, Irak, Siria)</option>
+            <option value="persa">Persa (Irán)</option>
+            <option value="asiatica">Asiática</option>
+          </optgroup>
+          <optgroup label="América">
+            <option value="latina">Latina</option>
+            <option value="afrodescendiente">Afrodescendiente</option>
+          </optgroup>
+          <optgroup label="África">
+            <option value="subsahariana">Subsahariana</option>
+            <option value="norteafricana">Norteafricana</option>
+          </optgroup>
         </select>
       </div>
 
@@ -182,14 +203,34 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
         <select
           id="idiomas"
           name="idiomas"
-          className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 w-full lg:w-full"
+          value={formData.idiomas}
           onChange={handleChange}
+          className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 w-full lg:w-full"
         >
           <option value="">Seleccione un idioma</option>
-          <option value="es">Español</option>
-          <option value="en">Inglés</option>
-          <option value="fr">Francés</option>
+          <option value="es">Español (Castellano)</option>
+          <option value="en">Ingles</option>
+          <option value="ca">Catalán</option>
+          <option value="eu">Euskera</option>
+          <option value="gl">Gallego</option>
+          <option value="ast">Asturiano</option>
+          <option value="ar">Aragonés</option>
+          <option value="oc">Aranés (Occitano)</option>
         </select>
+      </div>
+
+      {/* Opción para habilitar/deshabilitar la búsqueda por ubicación */}
+      <div className="flex items-center">
+        <input
+          type="checkbox"
+          id="usarUbicacion"
+          checked={usarUbicacion}
+          onChange={() => setUsarUbicacion(!usarUbicacion)}
+          className="mr-2"
+        />
+        <label htmlFor="usarUbicacion" className="text-sm font-medium text-black">
+          Buscar por ubicación
+        </label>
       </div>
 
       <div className="flex items-center justify-center md:justify-start">

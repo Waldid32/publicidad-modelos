@@ -26,7 +26,6 @@ const fetchUserData = async () => {
   }
 };
 
-
 interface UserData {
   token: string | null;
   userId: string | null;
@@ -48,6 +47,26 @@ export default function Cliente() {
     initializeAuth();
   }, []);
 
+  // Aquí se actualizan los favoritos cuando isLoggedIn sea true
+  useEffect(() => {
+    async function fetchFavoritos() {
+      try {
+        const res = await fetch("/api/favoritos", { credentials: "include" });
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || "Error al obtener favoritos");
+        }
+        setFavoritos(data.favoritos);
+      } catch (error: any) {
+        console.error("Error al cargar los favoritos:", error.message);
+      }
+    }
+
+    if (isLoggedIn) {
+      fetchFavoritos();
+    }
+  }, [isLoggedIn]);
+
   const toggleFavorito = async (modelo: ModelData) => {
     if (!isLoggedIn || !userData.token || !userData.userId) {
       return toast.error("Usuario no autenticado");
@@ -55,18 +74,10 @@ export default function Cliente() {
 
     try {
       if (favoritos.some(fav => fav.id === modelo.id)) {
-        const response = await eliminarDeFavoritos(
-          userData.userId,
-          modelo.id,
-          userData.token
-        );
+        await eliminarDeFavoritos(userData.userId, modelo.id, userData.token);
         setFavoritos((prev) => prev.filter(fav => fav.id !== modelo.id));
       } else {
-        const response = await agregarAFavoritos(
-          userData.userId,
-          modelo.id,
-          userData.token
-        );
+        await agregarAFavoritos(userData.userId, modelo.id, userData.token);
         setFavoritos((prev) => [...prev, modelo]);
       }
     } catch (error: any) {

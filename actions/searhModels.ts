@@ -7,6 +7,8 @@ export async function searhModels(formData: {
   etnia: string;
   zona: string;
   idiomas: string;
+  edad: number | undefined;
+  precio: number | undefined;
 }) {
   try {
     const result = await axios.post(

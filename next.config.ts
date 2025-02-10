@@ -1,9 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  env: {
-    NEXT_PUBLIC_OPENCAGE_API_KEY: process.env.OPENCAGE_API_KEY,
-  },
   images: {
     remotePatterns: [
       {
@@ -15,6 +12,10 @@ const nextConfig: NextConfig = {
         pathname: "/uploads/**",
       },
     ],
+    unoptimized: false,
+  },
+  env: {
+    NEXT_PUBLIC_OPENCAGE_API_KEY: process.env.OPENCAGE_API_KEY,
   },
   experimental: {
     serverActions: {

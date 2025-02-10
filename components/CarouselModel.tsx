@@ -17,11 +17,13 @@ export function CarouselModel({ multimedias }: { multimedias: string[] }) {
             </video>
           ) : (
             <Image
-              key={index}
               src={item}
               alt={`Multimedia ${index}`}
-              className="w-full h-full object-contain"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="w-full h-full object-fill rounded-2xl"
+              width={10}
+              height={30}
+              key={index}
+              unoptimized
             />
           );
         })}

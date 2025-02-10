@@ -6,12 +6,12 @@ import { PerfilPublico } from "@/components/PerfilPublico";
 import { DataModels } from "@/types/types";
 import { useParams } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
+import { toast } from "sonner";
 
 export default function ModelInfoPage() {
     const { nombreUsuario } = useParams();
     const [dataModel, setDataModel] = useState<DataModels | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         if (!nombreUsuario) return;
@@ -20,9 +20,8 @@ export default function ModelInfoPage() {
             try {
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/${nombreUsuario}`);
                 setDataModel(response.data);
-            } catch (err) {
-                console.error(err);
-                setError("Error al obtener datos");
+            } catch {
+                toast.error("Error al obtener datos");
             } finally {
                 setLoading(false);
             }
@@ -32,7 +31,6 @@ export default function ModelInfoPage() {
     }, [nombreUsuario]);
 
     if (loading) return <div>Cargando...</div>;
-    if (error) return <div>{error}</div>;
 
     if (!dataModel) {
         return <div>No se encontró información para esta modelo.</div>;

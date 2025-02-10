@@ -21,7 +21,7 @@ export async function GET() {
             token,
             decoded
         }, { status: 200 });
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Token inválido" }, { status: 401 });
     }
 }

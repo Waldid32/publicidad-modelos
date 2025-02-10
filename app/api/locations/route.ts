@@ -32,8 +32,7 @@ export async function GET(req: Request) {
     const suggestions = data.results?.map((result) => result.formatted) || [];
 
     return NextResponse.json(suggestions);
-  } catch (error) {
-    console.error("Error en la API de ubicaciones:", error);
+  } catch {
     return NextResponse.json(
       { message: "Error en la consulta de ubicaciones. Intente más tarde." },
       { status: 500 }

@@ -62,7 +62,7 @@ export async function loginAction({
       username: data.user.nombreUsuario,
       nombreCompleto: data.user.nombreCompleto,
     };
-  } catch (error) {
+  } catch {
     return { success: false, message: "Credenciales incorrectas" };
   }
 }

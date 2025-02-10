@@ -136,9 +136,8 @@ export default function NavBarLogin({
 
         {/* Menú principal (desktop y mobile) */}
         <div
-          className={`items-center justify-around w-full md:flex md:w-auto md:order-1 ${
-            isMenuOpen ? "block" : "hidden"
-          }`}
+          className={`items-center justify-around w-full md:flex md:w-auto md:order-1 ${isMenuOpen ? "block" : "hidden"
+            }`}
           id="navbar-user"
         >
           {role === "modelo" ? (
@@ -171,9 +170,28 @@ export default function NavBarLogin({
                 </Link>
               </li>
             </ul>
-          ) : (
-            ""
-          )}
+          ) : role === "cliente" ? (
+            <ul className="flex flex-col font-medium p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-white md:p-3">
+              <li>
+                <Link
+                  href="/cliente"
+                  className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Inicio
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/cliente/modelosFavoritas"
+                  className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Favoritos
+                </Link>
+              </li>
+            </ul>
+          ) : null}
         </div>
       </div>
     </nav>

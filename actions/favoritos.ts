@@ -35,7 +35,6 @@ export async function eliminarDeFavoritos(userId: string, modeloId: string, toke
         );
         return response.data;
     } catch (error: any) {
-        console.error("Error en eliminarDeFavoritos:", error);
         throw error.response?.data || error;
     }
 }

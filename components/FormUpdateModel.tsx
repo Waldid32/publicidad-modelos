@@ -177,8 +177,7 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
       } else {
         toast.error(response.message);
       }
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
+    } catch {
       toast.error("Error al actualizar la información");
     }
   };

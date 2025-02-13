@@ -3,7 +3,7 @@ import axios from "axios";
 export async function agregarAFavoritos(userId: string, modeloId: string, token: string) {
     try {
         const response = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_URL}/users/favoritos`,
+            `${process.env.NEXT_PUBLIC_API_URL_FAV}/users/favoritos`,
             { modeloId },
             {
                 headers: {
@@ -25,7 +25,7 @@ export async function eliminarDeFavoritos(userId: string, modeloId: string, toke
 
     try {
         const response = await axios.delete(
-            `${process.env.NEXT_PUBLIC_API_URL}/users/favoritos/${modeloId}`,
+            `${process.env.NEXT_PUBLIC_API_URL_FAV}/users/favoritos/${modeloId}`,
             {
                 headers: {
                     "Content-Type": "application/json",

@@ -1,40 +1,10 @@
 "use client"
 
+import { CheckoutButton } from "@/components/CheckoutButton";
 import { Card } from "flowbite-react";
-import { useState } from "react";
+
 
 export default function PlanesPage() {
-
-
-  const [loading, setLoading] = useState(false);
-
-  const handleCheckout = async (subscriptionType: 'SEMANAL' | 'DESTACADA') => {
-    setLoading(true);
-
-    const userId = '12345'; // Obtén el userId del estado o contexto
-
-    try {
-      const response = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, subscriptionType }),
-      });
-
-      const data = await response.json();
-      if (data.url) {
-        window.location.href = data.url; // Redirigir a Stripe
-      } else {
-        alert('Error en el checkout');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-
-
   return (
     <section className="flex flex-col justify-center items-center gap-10">
       {/* TITLE */}
@@ -97,13 +67,7 @@ export default function PlanesPage() {
               <span className="text-base font-normal leading-tight text-gray-500">Publicación destacada</span>
             </li>
           </ul>
-          <button
-            type="button"
-            onClick={() => handleCheckout('SEMANAL')}
-            className="inline-flex w-full justify-center rounded-lg bg-segundary px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-cyan-200 "
-          >
-            Comprar
-          </button>
+          <CheckoutButton subscriptionType="SEMANAL" />
         </Card>
 
         <Card className="w-72">
@@ -163,13 +127,7 @@ export default function PlanesPage() {
               <span className="text-base font-normal leading-tight text-gray-500">Publicación destacada</span>
             </li>
           </ul>
-          <button
-            type="button"
-            onClick={() => handleCheckout('DESTACADA')}
-            className="inline-flex w-full justify-center rounded-lg bg-segundary px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-cyan-200 "
-          >
-            Comprar
-          </button>
+          <CheckoutButton subscriptionType="DESTACADA" />
         </Card>
       </div>
     </section>

@@ -6,7 +6,7 @@ import { Card } from "flowbite-react";
 
 export default function PlanesPage() {
   return (
-    <section className="flex flex-col justify-center items-center gap-10">
+    <section className="flex flex-col justify-center items-center gap-10 h-screen">
       {/* TITLE */}
       <h1 className="font-bold text-xl">SUSCRIPCIONES / PLANES</h1>
       {/* PLANES */}

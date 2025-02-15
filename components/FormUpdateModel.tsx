@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { updateModelAction } from "@/actions/updateModelAction";
 import { idiomasDisponibles } from "@/utils/idiomasMap";
@@ -9,6 +9,7 @@ import Image from "next/image";
 
 interface FormUpdateModelProps {
   dataModel: {
+    id: string;
     duracionesAdicionales: string;
     edad: string;
     multimedias: (string | File)[];
@@ -62,9 +63,33 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
     descripcion: dataModel.descripcion || "",
     multimedias: dataModel.multimedias || [],
   });
-
+  const [hasSubscription, setHasSubscription] = useState<boolean | null>(null);
   const { nombreUsuario } = dataModel;
   const router = useRouter();
+
+  useEffect(() => {
+    const checkSubscription = async () => {
+      if (!dataModel.nombreUsuario) {
+        setHasSubscription(false);
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/check-subscription?nombreUsuario=${dataModel.nombreUsuario}`);
+        if (!res.ok) throw new Error("Error en la API");
+
+        const result = await res.json();
+        setHasSubscription(result.isActive);
+      } catch (error) {
+        setHasSubscription(false);
+      }
+    };
+
+    checkSubscription();
+  }, [dataModel.nombreUsuario]);
+
+
+  console.log(hasSubscription)
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -164,8 +189,8 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
       }
     });
 
-    if (!dataModel.suscripcionBasica) {
-      toast.error("Debes tener una suscripción básica activa para publicar tu perfil.");
+    if (!hasSubscription) {
+      toast.error("Debes tener una suscripción activa para publicar tu perfil.");
       return;
     }
 

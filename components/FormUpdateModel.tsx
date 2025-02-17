@@ -6,6 +6,8 @@ import { updateModelAction } from "@/actions/updateModelAction";
 import { idiomasDisponibles } from "@/utils/idiomasMap";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { calculateAge } from "@/utils/functions";
+import { ALLOWED_IMAGE_TYPES, ALLOWED_VIDEO_TYPES, MAX_IMAGE_SIZE, MAX_VIDEO_SIZE } from "@/utils/const";
 
 interface FormUpdateModelProps {
   dataModel: {
@@ -25,27 +27,7 @@ interface FormUpdateModelProps {
   };
 }
 
-const MAX_IMAGE_SIZE = 2 * 1024 * 1024; // 2 MB
-const ALLOWED_IMAGE_TYPES = ["image/png", "image/jpeg"];
-const MAX_VIDEO_SIZE = 20 * 1024 * 1024; // 20MB
-const ALLOWED_VIDEO_TYPES = ["video/mp4"];
-
 export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
-
-
-  const calculateAge = (birthDate: string): number => {
-    const birth = new Date(birthDate);
-    const today = new Date();
-    let age = today.getFullYear() - birth.getFullYear();
-    const monthDiff = today.getMonth() - birth.getMonth();
-
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-      age--; // Ajustar si aún no ha pasado su cumpleaños este año
-    }
-
-    return age;
-  };
-
   const [formData, setFormData] = useState<{
     duracionesAdicionales: string;
     edad: number;
@@ -63,33 +45,34 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
     descripcion: dataModel.descripcion || "",
     multimedias: dataModel.multimedias || [],
   });
-  const [hasSubscription, setHasSubscription] = useState<boolean | null>(null);
+  const [hasSubscription, setHasSubscription] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const { nombreUsuario } = dataModel;
   const router = useRouter();
 
+  // Consultamos el endpoint para saber si hay suscripción activa
   useEffect(() => {
-    const checkSubscription = async () => {
-      if (!dataModel.nombreUsuario) {
-        setHasSubscription(false);
-        return;
-      }
-
+    const fetchSubscription = async () => {
       try {
-        const res = await fetch(`/api/check-subscription?nombreUsuario=${dataModel.nombreUsuario}`);
-        if (!res.ok) throw new Error("Error en la API");
-
-        const result = await res.json();
-        setHasSubscription(result.isActive);
+        const res = await fetch("/api/auth/suscription");
+        if (!res.ok) {
+          setHasSubscription(false);
+          return;
+        }
+        const data = await res.json();
+        // Asumimos que en las cookies los valores son "true" o "false"
+        const susBasic = data.suscripcionBasica === "true";
+        const susPremiun = data.suscripcionPremiun === "true";
+        setHasSubscription(susBasic || susPremiun);
       } catch (error) {
         setHasSubscription(false);
+      } finally {
+        setLoading(false);
       }
     };
 
-    checkSubscription();
-  }, [dataModel.nombreUsuario]);
-
-
-  console.log(hasSubscription)
+    fetchSubscription();
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -189,8 +172,9 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
       }
     });
 
+    // Verifica si el usuario tiene suscripción activa
     if (!hasSubscription) {
-      toast.error("Debes tener una suscripción activa para publicar tu perfil.");
+      toast.error("Debes tener una suscripción activa para actualizar tu perfil.");
       return;
     }
 

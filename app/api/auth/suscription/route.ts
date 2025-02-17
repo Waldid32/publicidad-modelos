@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import jwt from "jsonwebtoken";
 
 export async function GET() {
     const cookieStore = await cookies();
@@ -8,6 +7,10 @@ export async function GET() {
     const suscripcionPremiun = cookieStore.get("suscripcionPremiun")?.value;
 
     if (!suscripcionBasica) {
+        return NextResponse.json({ error: "No autenticado" }, { status: 401 });
+    }
+
+    if (!suscripcionPremiun) {
         return NextResponse.json({ error: "No autenticado" }, { status: 401 });
     }
 

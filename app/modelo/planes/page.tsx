@@ -28,13 +28,7 @@ export default function PlanesPage() {
         headers: { 'Content-Type': 'application/json' },
       })
         .then((res) => res.json())
-        .then((data) => {
-          if (data.success) {
-            console.log("Suscripción actualizada correctamente.");
-          } else {
-            console.error("Error al actualizar la suscripción.");
-          }
-        })
+        .then()
         .catch((err) => console.error("Error al actualizar la suscripción:", err));
     } else if (params.has("cancel")) {
       setStatus("cancel");

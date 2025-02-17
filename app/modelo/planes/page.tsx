@@ -17,6 +17,30 @@ export default function PlanesPage() {
     }
   }, []);
 
+  useEffect(() => {
+    // Leer la URL para detectar si hay un éxito o una cancelación
+    const params = new URLSearchParams(window.location.search);
+    if (params.has("success")) {
+      setStatus("success");
+      // Llamamos al endpoint para actualizar la suscripción (y las cookies)
+      fetch('/api/auth/update-suscription', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            console.log("Suscripción actualizada correctamente.");
+          } else {
+            console.error("Error al actualizar la suscripción.");
+          }
+        })
+        .catch((err) => console.error("Error al actualizar la suscripción:", err));
+    } else if (params.has("cancel")) {
+      setStatus("cancel");
+    }
+  }, []);
+
   return (
     <section className="flex flex-col justify-center items-center gap-10 h-screen">
       {/* Mostrar Mensaje de Pago Exitoso o Cancelado */}

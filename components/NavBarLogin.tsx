@@ -106,7 +106,7 @@ export default function NavBarLogin({
           </div>
 
           {/* Botón hamburguesa (mobile) */}
-          {role === "modelo" ? (
+          {role === "modelo" || role === "admin" ? (
             <button
               type="button"
               className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
@@ -188,6 +188,19 @@ export default function NavBarLogin({
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Favoritos
+                </Link>
+              </li>
+            </ul>
+          ) : role === "admin" ? (
+            <ul className="flex flex-col font-medium p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-white md:p-3">
+              <li>
+                <Link href="/admin" className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0" onClick={() => setIsMenuOpen(false)}>
+                  Inicio
+                </Link>
+              </li>
+              <li>
+                <Link href="/admin/nuevoAdmin" className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0" onClick={() => setIsMenuOpen(false)}>
+                  Nuevo Admin
                 </Link>
               </li>
             </ul>

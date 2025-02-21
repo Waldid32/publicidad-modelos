@@ -31,8 +31,8 @@ services:
       - /etc/ssl/certs/modelmatch/modelmatch_net_2025.fullchain.crt:/etc/ssl/certs/modelmatch/modelmatch_net_2025.fullchain.crt
       - /etc/ssl/private/model/modelmatch_2025.key:/etc/ssl/private/model/modelmatch_2025.key
     ports:
-      - "80:80" # Para HTTP
-      - "443:443" # Para HTTPS (debes agregar esta línea)
+      - "8080:80" # Para HTTP
+      - "4443:443" # Para HTTPS (debes agregar esta línea)
     depends_on:
       - web
     networks:

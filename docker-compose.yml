@@ -28,8 +28,8 @@ services:
     image: nginx:latest
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro # Montamos la configuración personalizada
-      - /etc/ssl/certs/modelmatch/modelmatch_net_2025.fullchain.crt:/etc/ssl/certs/modelmatch/modelmatch_net_2025.fullchain.crt
-      - /etc/ssl/private/model/modelmatch_2025.key:/etc/ssl/private/model/modelmatch_2025.key
+      - /etc/ssl/certs/clodw/cloudflare_origin.crt:/etc/ssl/certs/clodw/cloudflare_origin.crt
+      - /etc/ssl/private/clodw/cloudflare_origin.key:/etc/ssl/private/clodw/cloudflare_origin.key
     ports:
       - "8080:80" # Para HTTP
       - "4443:443" # Para HTTPS (debes agregar esta línea)

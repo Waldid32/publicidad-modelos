@@ -28,7 +28,7 @@ services:
     image: nginx:latest
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro # Montamos la configuración personalizada
-      - /etc/ssl/certs/modelmatch/modelmatch.net.crt:/etc/ssl/certs/modelmatch/modelmatch.net.crt
+      - /etc/ssl/certs/modelmatch/modelmatch_net.fullchain.crt:/etc/ssl/certs/modelmatch/modelmatch_net.fullchain.crt
       - /etc/ssl/private/model/modelmatch.net.key:/etc/ssl/private/model/modelmatch.net.key
     ports:
       - "80:80" # Para HTTP

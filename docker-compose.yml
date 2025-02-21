@@ -29,7 +29,7 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro # Montamos la configuración personalizada
       - /etc/ssl/certs/modelmatch/modelmatch_net.fullchain.crt:/etc/ssl/certs/modelmatch/modelmatch_net.fullchain.crt
-      - /etc/ssl/private/model/modelmatch.net.key:/etc/ssl/private/model/modelmatch.net.key
+      - /etc/ssl/private/model/modelmatch_2025.key:/etc/ssl/private/model/modelmatch_2025.key
     ports:
       - "80:80" # Para HTTP
       - "443:443" # Para HTTPS (debes agregar esta línea)

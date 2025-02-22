@@ -23,22 +23,6 @@ services:
         max-file: "3"
     networks:
       - modelos-publicidad
-
-  nginx:
-    image: nginx:latest
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro # Montamos la configuración personalizada
-      # Mapeas la carpeta con los certificados
-      - ./ssl/certs/clodw/cloudflare_origin.crt:/etc/ssl/certs/clodw/cloudflare_origin.crt:ro
-      - ./ssl/private/clodw/cloudflare_origin.key:/etc/ssl/private/clodw/cloudflare_origin.key:ro
-    ports:
-      - "8080:80" # Para HTTP
-      - "4443:443" # Para HTTPS (debes agregar esta línea)
-    depends_on:
-      - web
-    networks:
-      - modelos-publicidad
-
 networks:
   modelos-publicidad:
     external: true

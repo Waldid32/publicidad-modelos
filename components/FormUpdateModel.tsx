@@ -191,7 +191,6 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
     }
   };
 
-
   const isVideo = (file: string | File) => {
     if (typeof file === "string") {
       return file.match(/\.(mp4)$/i);
@@ -212,7 +211,7 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
             type="tel"
             name="numeroContacto"
             id="numeroContacto"
-            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2 rounded-lg"
+            className="block py-2.5 px-0 w-full text-sm border-0 border-b-2 rounded-lg"
             value={formData.numeroContacto}
             onChange={handleChange}
             required
@@ -231,7 +230,7 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
             type="number"
             name="edad"
             id="edad"
-            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2 rounded-lg bg-gray-100 cursor-not-allowed"
+            className="block py-2.5 px-0 w-full text-sm border-0 border-b-2 rounded-lg bg-gray-100 cursor-not-allowed"
             value={formData.edad}
             readOnly
           />
@@ -249,7 +248,7 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
             type="number"
             name="precioHora"
             id="precioHora"
-            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2 rounded-lg"
+            className="block py-2.5 px-0 w-full text-sm border-0 border-b-2 rounded-lg"
             value={formData.precioHora}
             onChange={handleChange}
             required
@@ -268,7 +267,7 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
             multiple
             name="idiomas"
             id="idiomas"
-            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2 rounded-lg"
+            className="block py-2.5 px-0 w-full text-sm border-0 border-b-2 rounded-lg"
             value={formData.idiomas} // <-- formData.idiomas es un array
             onChange={handleChange}
           >
@@ -292,7 +291,7 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
             type="text"
             name="duracionesAdicionales"
             id="duracionesAdicionales"
-            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2 rounded-lg"
+            className="block py-2.5 px-0 w-full text-sm border-0 border-b-2 rounded-lg"
             value={formData.duracionesAdicionales}
             onChange={handleChange}
           />
@@ -309,7 +308,7 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
           <textarea
             name="descripcion"
             id="descripcion"
-            className="block py-2.5 px-0 w-full text-sm uppercase border-0 border-b-2 rounded-lg h-32"
+            className="block py-2.5 px-0 w-full text-sm border-0 border-b-2 rounded-lg h-32"
             value={formData.descripcion}
             onChange={handleChange}
             required

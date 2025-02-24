@@ -9,7 +9,6 @@ export function CarouselModel({ multimedias }: { multimedias: string[] }) {
       <Carousel slide={true} slideInterval={4000}>
         {multimedias.map((item, index) => {
           const isVideo = item.toLowerCase().endsWith(".mp4");
-
           return isVideo ? (
             <video key={index} className="w-full h-full" controls>
               <source src={item} type="video/mp4" />

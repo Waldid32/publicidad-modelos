@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { updateModelAction } from "@/actions/updateModelAction";
-import { idiomasDisponibles } from "@/utils/idiomasMap";
+import { getCookieValue, idiomasDisponibles } from "@/utils/idiomasMap";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { calculateAge } from "@/utils/functions";
@@ -25,9 +25,10 @@ interface FormUpdateModelProps {
     suscripcionPremiun: boolean;
     fechaNacimiento: string;
   };
+  role?: string;
 }
 
-export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
+export function FormUpdateModel({ dataModel, role }: FormUpdateModelProps) {
   const [formData, setFormData] = useState<{
     duracionesAdicionales: string;
     edad: number;
@@ -173,7 +174,7 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
     });
 
     // Verifica si el usuario tiene suscripción activa
-    if (!hasSubscription) {
+    if (role !== "admin" && !hasSubscription) {
       toast.error("Debes tener una suscripción activa para actualizar tu perfil.");
       return;
     }
@@ -182,7 +183,11 @@ export function FormUpdateModel({ dataModel }: FormUpdateModelProps) {
       const response = await updateModelAction(nombreUsuario, fd);
       if (response.success) {
         toast.success("Información actualizada exitosamente");
-        router.push("/modelo");
+        if (role !== "model ") {
+          router.push("/modelo");
+        }
+        router.push("/admin");
+
       } else {
         toast.error(response.message);
       }

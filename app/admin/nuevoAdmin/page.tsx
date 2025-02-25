@@ -1,8 +1,7 @@
 'use client'
 
-import { registerAdminAction } from '@/actions/registerAdminActions';
 import { useRouter } from 'next/navigation';
-import { startTransition, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { toast } from 'sonner';
 
 export default function NuevoAdminPage() {
@@ -25,23 +24,26 @@ export default function NuevoAdminPage() {
         }));
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
-        console.log(formData)
-
-        startTransition(async () => {
-            const result = await registerAdminAction(formData);
-            if (result.success) {
-                toast.success("Registro exitoso.");
-                router.push("/admin");
-            } else {
-                toast.error('Error al crear el administrador intente mas tarde');
-            }
+        const response = await fetch('/api/register-admin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
         });
+
+        const result = await response.json();
+
+        if (result.success) {
+            toast.success('Registro exitoso.');
+            router.push('/admin');
+        } else {
+            toast.error(result.message || 'Error al crear el administrador, intente más tarde');
+        }
     };
-
-
 
     return (
         <section className="bg-gray-50">
@@ -167,13 +169,6 @@ export default function NuevoAdminPage() {
                                 className="w-full text-white bg-segundary hover:bg-primary hover:text-black focus:ring-4 focus:outline-none focus:ring-primary font-medium rounded-lg text-sm px-5 py-2.5 text-center "
                             >
                                 Crear Admin
-                            </button>
-                            <button
-                                type="button"
-                                className="w-full text-white bg-segundary hover:bg-primary hover:text-black focus:ring-4 focus:outline-none focus:ring-primary font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-                                onClick={() => router.push("/admin")}
-                            >
-                                Rregresar
                             </button>
                         </form>
                     </div>

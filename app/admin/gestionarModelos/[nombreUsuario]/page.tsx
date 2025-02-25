@@ -1,13 +1,16 @@
 import { FormUpdateModel } from "@/components/FormUpdateModel";
+import { cookies } from "next/headers";
 
-interface Params {
+interface Props {
     params: {
         nombreUsuario: string;
     };
 }
 
-export default async function GestionarModelosPage({ params }: Params) {
+export default async function GestionarModelosPage({ params }: Props) {
     const { nombreUsuario } = params;
+    const cookieStore = await cookies();
+    const role = cookieStore.get("role")?.value || "";
 
     if (!nombreUsuario) {
         return <div>No hay usuario en la ruta</div>;
@@ -30,7 +33,7 @@ export default async function GestionarModelosPage({ params }: Params) {
 
     return (
         <div className="flex flex-col md:flex-row gap-5 justify-center items-center w-full">
-            <FormUpdateModel dataModel={dataModel} />
+            <FormUpdateModel dataModel={dataModel} role={role} />
         </div>
     );
 }

@@ -5,6 +5,7 @@ export default async function GestionarModelosPage({
   params,
 }: {
   params: { nombreUsuario: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const { nombreUsuario } = params;
   const cookieStore = await cookies();

@@ -17,11 +17,11 @@ interface Filters {
   nombreCompleto: string;
   etnia: string;
   idiomas: string;
-  edad: number | '' | undefined;
-  precio: number | null | undefined;
+  edad: number | undefined;
+  precio: number | undefined;
   distancia: number;
   ubicacion?: Ubicacion;
-  zona?: string;
+  zona: string;
 }
 
 export function SearchModels({ setDataModels }: SearchModelsProps) {
@@ -99,6 +99,7 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
       edad: formData.edad !== '' ? Number(formData.edad) : undefined,
       precio: formData.precio !== null ? Number(formData.precio) : undefined,
       distancia: formData.distancia,
+      zona: usarUbicacion ? 'Cercano' : 'No especificado',
     };
 
     if (usarUbicacion) {

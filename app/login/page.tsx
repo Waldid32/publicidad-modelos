@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { loginAction } from "@/actions/loginAction";
+import { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { loginAction } from '@/actions/loginAction';
 
 export default function Login() {
-  const [nombreUsuario, setNombreUsuario] = useState("");
-  const [password, setPassword] = useState("");
+  const [nombreUsuario, setNombreUsuario] = useState('');
+  const [password, setPassword] = useState('');
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -22,9 +22,9 @@ export default function Login() {
         toast.success(`Bienvenido, ${result.username}`);
 
         // Redirige según el rol
-        if (result.role === "admin") router.push("/admin");
-        if (result.role === "cliente") router.push("/cliente");
-        if (result.role === "modelo") router.push("/modelo");
+        if (result.role === 'admin') router.push('/admin');
+        if (result.role === 'cliente') router.push('/cliente');
+        if (result.role === 'modelo') router.push('/modelo');
       } else {
         toast.error(result.message);
       }
@@ -101,12 +101,12 @@ export default function Login() {
                 className="w-full text-white bg-segundary hover:bg-primary hover:text-black focus:ring-4 focus:outline-none focus:ring-primary font-medium rounded-lg text-sm px-5 py-2.5 text-center "
                 disabled={isPending}
               >
-                {isPending ? "Cargando..." : "Iniciar Sesión"}
+                {isPending ? 'Cargando...' : 'Iniciar Sesión'}
               </button>
               <button
                 type="button"
                 className="w-full text-white bg-segundary hover:bg-primary hover:text-black focus:ring-4 focus:outline-none focus:ring-primary font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-                onClick={() => router.push("/")}
+                onClick={() => router.push('/')}
               >
                 Rregresar
               </button>

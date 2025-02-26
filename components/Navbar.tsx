@@ -1,6 +1,6 @@
-"use client";
-import { useState } from "react";
-import Link from "next/link";
+'use client';
+import { useState } from 'react';
+import Link from 'next/link';
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -55,7 +55,7 @@ export function Navbar() {
         {/* Menu Links */}
         <div
           className={`${
-            menuOpen ? "block" : "hidden"
+            menuOpen ? 'block' : 'hidden'
           } items-center justify-between w-full md:flex md:w-auto md:order-1`}
           id="navbar-sticky"
         >

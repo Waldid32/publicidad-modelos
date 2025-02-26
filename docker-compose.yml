@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3232:3232"
+      - '3232:3232'
     env_file:
       - .env
     environment:
@@ -12,15 +12,15 @@ services:
       - PORT=3232
     restart: always
     healthcheck:
-      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3232" ]
+      test: [ 'CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:3232' ]
       interval: 30s
       timeout: 10s
       retries: 3
     logging:
-      driver: "json-file"
+      driver: 'json-file'
       options:
-        max-size: "10m"
-        max-file: "3"
+        max-size: '10m'
+        max-file: '3'
     networks:
       - modelos-publicidad
 networks:

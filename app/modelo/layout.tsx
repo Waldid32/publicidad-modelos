@@ -1,8 +1,8 @@
-import NavBarLogin from "@/components/NavBarLogin";
-import { cookies } from "next/headers";
+import NavBarLogin from '@/components/NavBarLogin';
+import { cookies } from 'next/headers';
 
 export const metadata = {
-  title: "Sección Modelos",
+  title: 'Sección Modelos',
 };
 
 export default async function ModeloLayout({
@@ -13,8 +13,8 @@ export default async function ModeloLayout({
   // Este componente es un Server Component por defecto en Next 13/14
   const cookieStore = await cookies();
 
-  const role = cookieStore.get("role")?.value || "";
-  const nombreCompleto = cookieStore.get("nombreCompleto")?.value || "";
+  const role = cookieStore.get('role')?.value || '';
+  const nombreCompleto = cookieStore.get('nombreCompleto')?.value || '';
 
   return (
     <div className="bg-bgPrimaryGradiante h-[100vh]">

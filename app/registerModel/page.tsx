@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { registerModelsAction } from "@/actions/registerModelsAction";
+import { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { registerModelsAction } from '@/actions/registerModelsAction';
 
 interface FormData {
   nombreCompleto: string;
@@ -19,20 +19,20 @@ interface FormData {
 
 export default function RegisterModel() {
   const [formData, setFormData] = useState<FormData>({
-    nombreCompleto: "",
-    email: "",
-    nombreUsuario: "",
-    fechaNacimiento: "",
-    password: "",
-    confirmarPassword: "",
-    etnia: "",
-    zona: "",
-    ciudad: "",
+    nombreCompleto: '',
+    email: '',
+    nombreUsuario: '',
+    fechaNacimiento: '',
+    password: '',
+    confirmarPassword: '',
+    etnia: '',
+    zona: '',
+    ciudad: '',
   });
   const [isPending, startTransition] = useTransition();
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(
-    null
+    null,
   );
 
   const router = useRouter();
@@ -42,17 +42,17 @@ export default function RegisterModel() {
   const maxDate = new Date(
     today.getFullYear() - 18,
     today.getMonth(),
-    today.getDate()
+    today.getDate(),
   )
     .toISOString()
-    .split("T")[0];
+    .split('T')[0];
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
 
-    if (name === "nombreUsuario") {
+    if (name === 'nombreUsuario') {
       setFormData({
         ...formData,
         [name]: value.toLowerCase(),
@@ -64,7 +64,7 @@ export default function RegisterModel() {
       });
     }
 
-    if (name === "zona") {
+    if (name === 'zona') {
       // Cancelar el temporizador anterior (si existe)
       if (debounceTimer) clearTimeout(debounceTimer);
 
@@ -96,7 +96,7 @@ export default function RegisterModel() {
     }
 
     if (age < 18) {
-      toast.error("Debes tener al menos 18 años para registrarte.");
+      toast.error('Debes tener al menos 18 años para registrarte.');
       return;
     }
 
@@ -104,8 +104,8 @@ export default function RegisterModel() {
       const result = await registerModelsAction(formData);
 
       if (result.success) {
-        toast.success("Registro exitoso. Ahora puedes iniciar sesión.");
-        router.push("/login");
+        toast.success('Registro exitoso. Ahora puedes iniciar sesión.');
+        router.push('/login');
       } else {
         toast.error(result.message);
       }
@@ -118,7 +118,7 @@ export default function RegisterModel() {
 
       const response = await fetch(`/api/locations?query=${query}`);
       if (!response.ok) {
-        throw new Error("Error al consultar la API de ubicaciones.");
+        throw new Error('Error al consultar la API de ubicaciones.');
       }
 
       const data = await response.json();
@@ -129,7 +129,7 @@ export default function RegisterModel() {
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    const ciudadExtraida = suggestion.split(",").pop()?.trim() || "";
+    const ciudadExtraida = suggestion.split(',').pop()?.trim() || '';
 
     setFormData({ ...formData, zona: suggestion, ciudad: ciudadExtraida });
     setSuggestions([]);
@@ -231,7 +231,7 @@ export default function RegisterModel() {
                   name="etnia"
                   id="etnia"
                   onChange={handleChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 "
+                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
                   required
                 >
                   <option value="">Selecciona una opción</option>
@@ -359,12 +359,12 @@ export default function RegisterModel() {
                 className="w-full text-white bg-segundary hover:bg-primary hover:text-black focus:ring-4 focus:outline-none focus:ring-primary font-medium rounded-lg text-sm px-5 py-2.5 text-center "
                 disabled={isPending}
               >
-                {isPending ? "Registrando..." : "Registrarse"}
+                {isPending ? 'Registrando...' : 'Registrarse'}
               </button>
               <button
                 type="button"
                 className="w-full text-white bg-segundary hover:bg-primary  hover:text-black focus:ring-4 focus:outline-none focus:ring-primary font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-                onClick={() => router.push("/")}
+                onClick={() => router.push('/')}
               >
                 Regresar
               </button>

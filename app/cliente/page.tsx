@@ -1,22 +1,23 @@
-"use client";
+'use client';
 
-import { ModelList } from "@/components/ModelList";
-import { SearchModels } from "@/components/SearchModels";
-import { TopModels } from "@/components/TopModels";
-import { ModelData } from "@/types/types";
-import { useState, useEffect } from "react";
-import { agregarAFavoritos, eliminarDeFavoritos } from "@/actions/favoritos";
-import { toast } from "sonner";
+import { ModelList } from '@/components/ModelList';
+import { SearchModels } from '@/components/SearchModels';
+import { TopModels } from '@/components/TopModels';
+import { ModelData } from '@/types/types';
+import { useState, useEffect } from 'react';
+import { agregarAFavoritos, eliminarDeFavoritos } from '@/actions/favoritos';
+import { toast } from 'sonner';
+import { AxiosError } from 'axios';
 
 const fetchUserData = async () => {
   try {
-    const response = await fetch("/api/auth/token", {
-      method: "GET",
-      credentials: "include",
+    const response = await fetch('/api/auth/token', {
+      method: 'GET',
+      credentials: 'include',
     });
 
     if (!response.ok) {
-      toast.error("No autenticado");
+      toast.error('No autenticado');
     }
 
     const data = await response.json();
@@ -35,7 +36,10 @@ export default function Cliente() {
   const [dataModels, setDataModels] = useState<ModelData[]>([]);
   const [favoritos, setFavoritos] = useState<ModelData[]>([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userData, setUserData] = useState<UserData>({ token: null, userId: null });
+  const [userData, setUserData] = useState<UserData>({
+    token: null,
+    userId: null,
+  });
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -51,14 +55,14 @@ export default function Cliente() {
   useEffect(() => {
     async function fetchFavoritos() {
       try {
-        const res = await fetch("/api/favoritos", { credentials: "include" });
+        const res = await fetch('/api/favoritos', { credentials: 'include' });
         const data = await res.json();
         if (!res.ok) {
-          throw new Error(data.error || "Error al obtener favoritos");
+          throw new Error(data.error || 'Error al obtener favoritos');
         }
         setFavoritos(data.favoritos);
-      } catch (error: any) {
-        console.error("Error al cargar los favoritos:", error.message);
+      } catch {
+        console.error('Error al cargar los favoritos');
       }
     }
 
@@ -69,20 +73,21 @@ export default function Cliente() {
 
   const toggleFavorito = async (modelo: ModelData) => {
     if (!isLoggedIn || !userData.token || !userData.userId) {
-      return toast.error("Usuario no autenticado");
+      return toast.error('Usuario no autenticado');
     }
 
     try {
-      if (favoritos.some(fav => fav.id === modelo.id)) {
+      if (favoritos.some((fav) => fav.id === modelo.id)) {
         await eliminarDeFavoritos(userData.userId, modelo.id, userData.token);
-        setFavoritos((prev) => prev.filter(fav => fav.id !== modelo.id));
+        setFavoritos((prev) => prev.filter((fav) => fav.id !== modelo.id));
       } else {
         await agregarAFavoritos(userData.userId, modelo.id, userData.token);
         setFavoritos((prev) => [...prev, modelo]);
       }
-    } catch (error: any) {
-      if (error.status === 409) {
-        return toast.error("El modelo ya está en favoritos");
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response?.status === 409) {
+        return toast.error('El modelo ya está en favoritos');
       }
     }
   };

@@ -1,11 +1,10 @@
-"use client";
+'use client';
 
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Table } from "flowbite-react";
-import { toast } from "sonner";
-
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { Table } from 'flowbite-react';
+import { toast } from 'sonner';
 
 interface Subscription {
   type: string;
@@ -24,16 +23,18 @@ export default function AdminHome() {
   useEffect(() => {
     async function fetchModelos() {
       try {
-        const response = (await axios.get("/api/models")).data;
+        const response = (await axios.get('/api/models')).data;
         const filteredData = response.map((item: Modelo) => ({
           nombreCompleto: item.nombreCompleto,
           nombreUsuario: item.nombreUsuario,
-          subscriptions: item.subscriptions || []
+          subscriptions: item.subscriptions || [],
         }));
         setModelos(filteredData);
       } catch {
         setModelos([]);
-        toast.error("No hay modelos registradas / Ocurrió un error al cargar los modelos.");
+        toast.error(
+          'No hay modelos registradas / Ocurrió un error al cargar los modelos.',
+        );
       }
     }
     fetchModelos();
@@ -58,17 +59,25 @@ export default function AdminHome() {
                   key={index}
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
                 >
-                  <Table.Cell className="px-4 py-2 border">{modelo.nombreCompleto}</Table.Cell>
+                  <Table.Cell className="px-4 py-2 border">
+                    {modelo.nombreCompleto}
+                  </Table.Cell>
                   <Table.Cell className="px-4 py-2 border">
                     {modelo.subscriptions && modelo.subscriptions.length > 0
-                      ? modelo.subscriptions.map((sub: Subscription) => sub.type).join(", ")
-                      : "Sin suscripciones"}
+                      ? modelo.subscriptions
+                          .map((sub: Subscription) => sub.type)
+                          .join(', ')
+                      : 'Sin suscripciones'}
                   </Table.Cell>
 
                   <Table.Cell className="px-4 py-2 border">
                     <button
                       className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                      onClick={() => router.push(`/admin/gestionarModelos/${modelo.nombreUsuario}`)}
+                      onClick={() =>
+                        router.push(
+                          `/admin/gestionarModelos/${modelo.nombreUsuario}`,
+                        )
+                      }
                     >
                       Gestionar
                     </button>

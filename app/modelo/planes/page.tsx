@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { CheckoutButton } from "@/components/CheckoutButton";
-import { Card, Modal } from "flowbite-react";
+import { useEffect, useState } from 'react';
+import { CheckoutButton } from '@/components/CheckoutButton';
+import { Card, Modal } from 'flowbite-react';
 
 export default function PlanesPage() {
   const [status, setStatus] = useState<string | null>(null);
@@ -10,18 +10,18 @@ export default function PlanesPage() {
   useEffect(() => {
     // Leer la URL para detectar si hay un éxito o una cancelación
     const params = new URLSearchParams(window.location.search);
-    if (params.has("success")) {
-      setStatus("success");
-    } else if (params.has("cancel")) {
-      setStatus("cancel");
+    if (params.has('success')) {
+      setStatus('success');
+    } else if (params.has('cancel')) {
+      setStatus('cancel');
     }
   }, []);
 
   useEffect(() => {
     // Leer la URL para detectar si hay un éxito o una cancelación
     const params = new URLSearchParams(window.location.search);
-    if (params.has("success")) {
-      setStatus("success");
+    if (params.has('success')) {
+      setStatus('success');
       // Llamamos al endpoint para actualizar la suscripción (y las cookies)
       fetch('/api/auth/update-suscription', {
         method: 'POST',
@@ -29,9 +29,11 @@ export default function PlanesPage() {
       })
         .then((res) => res.json())
         .then()
-        .catch((err) => console.error("Error al actualizar la suscripción:", err));
-    } else if (params.has("cancel")) {
-      setStatus("cancel");
+        .catch((err) =>
+          console.error('Error al actualizar la suscripción:', err),
+        );
+    } else if (params.has('cancel')) {
+      setStatus('cancel');
     }
   }, []);
 
@@ -40,13 +42,13 @@ export default function PlanesPage() {
       {/* Mostrar Mensaje de Pago Exitoso o Cancelado */}
       <Modal show={status !== null} onClose={() => setStatus(null)}>
         <Modal.Header>
-          {status === "success" ? "Pago Exitoso" : "Pago Cancelado"}
+          {status === 'success' ? 'Pago Exitoso' : 'Pago Cancelado'}
         </Modal.Header>
         <Modal.Body>
           <p>
-            {status === "success"
-              ? "✅ Tu pago fue procesado con éxito. Gracias por tu compra."
-              : "❌ Has cancelado el pago. Si deseas intentarlo de nuevo, selecciona un plan."}
+            {status === 'success'
+              ? '✅ Tu pago fue procesado con éxito. Gracias por tu compra.'
+              : '❌ Has cancelado el pago. Si deseas intentarlo de nuevo, selecciona un plan.'}
           </p>
         </Modal.Body>
         <Modal.Footer>
@@ -64,11 +66,15 @@ export default function PlanesPage() {
       {/* PLANES */}
       <div className="flex flex-col lg:flex-row gap-10 justify-center items-start">
         <Card className="w-72">
-          <h5 className="mb-4 text-xl font-medium text-gray-500">Membresía semanal</h5>
+          <h5 className="mb-4 text-xl font-medium text-gray-500">
+            Membresía semanal
+          </h5>
           <div className="flex items-baseline text-gray-900 ">
             <span className="text-3xl font-semibold">$</span>
             <span className="text-5xl font-extrabold tracking-tight">60</span>
-            <span className="ml-1 text-xl font-normal text-gray-500 ">/semana</span>
+            <span className="ml-1 text-xl font-normal text-gray-500 ">
+              /semana
+            </span>
           </div>
           <ul className="my-7 space-y-5">
             <li className="flex space-x-3">
@@ -101,7 +107,9 @@ export default function PlanesPage() {
                   clipRule="evenodd"
                 />
               </svg>
-              <span className="text-base font-normal leading-tight text-gray-500">Soporte Tecnico</span>
+              <span className="text-base font-normal leading-tight text-gray-500">
+                Soporte Tecnico
+              </span>
             </li>
             <li className="flex space-x-3 line-through decoration-gray-500">
               <svg
@@ -116,18 +124,24 @@ export default function PlanesPage() {
                   clipRule="evenodd"
                 />
               </svg>
-              <span className="text-base font-normal leading-tight text-gray-500">Publicación destacada</span>
+              <span className="text-base font-normal leading-tight text-gray-500">
+                Publicación destacada
+              </span>
             </li>
           </ul>
           <CheckoutButton subscriptionType="SEMANAL" />
         </Card>
 
         <Card className="w-72">
-          <h5 className="mb-4 text-xl font-medium text-gray-500">Publicación Destacada</h5>
+          <h5 className="mb-4 text-xl font-medium text-gray-500">
+            Publicación Destacada
+          </h5>
           <div className="flex items-baseline text-gray-900 ">
             <span className="text-3xl font-semibold">$</span>
             <span className="text-5xl font-extrabold tracking-tight">80</span>
-            <span className="ml-1 text-xl font-normal text-gray-500 ">/semana</span>
+            <span className="ml-1 text-xl font-normal text-gray-500 ">
+              /semana
+            </span>
           </div>
           <ul className="my-7 space-y-5">
             <li className="flex space-x-3">
@@ -160,7 +174,9 @@ export default function PlanesPage() {
                   clipRule="evenodd"
                 />
               </svg>
-              <span className="text-base font-normal leading-tight text-gray-500">Soporte Tecnico</span>
+              <span className="text-base font-normal leading-tight text-gray-500">
+                Soporte Tecnico
+              </span>
             </li>
 
             <li className="flex space-x-3">
@@ -176,7 +192,9 @@ export default function PlanesPage() {
                   clipRule="evenodd"
                 />
               </svg>
-              <span className="text-base font-normal leading-tight text-gray-500">Publicación destacada</span>
+              <span className="text-base font-normal leading-tight text-gray-500">
+                Publicación destacada
+              </span>
             </li>
           </ul>
           <CheckoutButton subscriptionType="DESTACADA" />

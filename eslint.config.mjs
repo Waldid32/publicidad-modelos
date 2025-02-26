@@ -1,6 +1,7 @@
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { FlatCompat } from '@eslint/eslintrc';
+import tailwindcss from 'eslint-plugin-tailwindcss';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -10,23 +11,16 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends(
-    'next/core-web-vitals', // Reglas de Next.js
-    'next/typescript', // Soporte para TypeScript
-  ),
+  ...compat.extends('next/core-web-vitals', 'next/typescript', 'prettier'),
   {
-    plugins: ['tailwindcss'], // Incluye el plugin de Tailwind CSS
+    plugins: { tailwindcss },
     rules: {
-      'tailwindcss/classnames-order': 'warn', // Ordena las clases de Tailwind automáticamente
-      'tailwindcss/no-custom-classname': 'off', // Desactiva errores por clases personalizadas
-      'indent': ['error', 2], // Indentación de 2 espacios
-      'quotes': ['error', 'single'], // Comillas simples
-      'semi': ['error', 'always'], // Punto y coma obligatorio
+      'tailwindcss/no-custom-classname': 'off',
+      quotes: ['error', 'single'], // Comillas simples
+      semi: ['error', 'always'], // Punto y coma obligatorio
       'react/react-in-jsx-scope': 'off', // No requerido en Next.js
       '@typescript-eslint/no-unused-vars': ['warn'], // Variables no usadas como advertencia
-      'max-len': ['error', { 'code': 80 }], // Máximo 80 caracteres por línea
       'object-curly-spacing': ['error', 'always'], // Espacios dentro de objetos
-      'comma-dangle': ['error', 'always-multiline'], // Comas en objetos multilínea
     },
   },
 ];

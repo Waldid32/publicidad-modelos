@@ -1,19 +1,35 @@
-"use client";
-import { searhModels } from "@/actions/searhModels";
-import { ModelData } from "@/types/types";
-import { useState, useEffect } from "react";
-import { toast } from "sonner";
+'use client';
+import { searhModels } from '@/actions/searhModels';
+import { ModelData } from '@/types/types';
+import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
 
 interface SearchModelsProps {
   setDataModels: (data: ModelData[]) => void;
 }
 
+interface Ubicacion {
+  lat: number | null;
+  lon: number | null;
+}
+
+interface Filters {
+  nombreCompleto: string;
+  etnia: string;
+  idiomas: string;
+  edad: number | '' | undefined;
+  precio: number | null | undefined;
+  distancia: number;
+  ubicacion?: Ubicacion;
+  zona?: string;
+}
+
 export function SearchModels({ setDataModels }: SearchModelsProps) {
   const [formData, setFormData] = useState({
-    nombreCompleto: "",
-    etnia: "",
-    idiomas: "",
-    edad: "" as number | "",
+    nombreCompleto: '',
+    etnia: '',
+    idiomas: '',
+    edad: '' as number | '',
     precio: null as number | null,
     distancia: 10, // Distancia por defecto en km
   });
@@ -30,7 +46,7 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
 
   // Obtener la ubicación del usuario si la opción está activada
   useEffect(() => {
-    if (usarUbicacion && "geolocation" in navigator) {
+    if (usarUbicacion && 'geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setUserLocation({
@@ -38,26 +54,28 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
             longitude: position.coords.longitude,
           });
         },
-        (error) => {
-          toast.error("No se pudo obtener tu ubicación.");
-        }
+        () => {
+          toast.error('No se pudo obtener tu ubicación.');
+        },
       );
     }
   }, [usarUbicacion]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target;
 
-    if (name === "precio") {
+    if (name === 'precio') {
       const numericValue = parseFloat(value);
       setFormData((prev) => ({
         ...prev,
         [name]: isNaN(numericValue) ? null : numericValue,
       }));
-    } else if (name === "edad") {
+    } else if (name === 'edad') {
       setFormData((prev) => ({
         ...prev,
-        [name]: value === "" ? "" : Number(value),
+        [name]: value === '' ? '' : Number(value),
       }));
     } else {
       setFormData((prev) => ({
@@ -71,14 +89,14 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
     e.preventDefault();
 
     if (usarUbicacion && (!userLocation.latitude || !userLocation.longitude)) {
-      return toast.error("No se ha detectado tu ubicación.");
+      return toast.error('No se ha detectado tu ubicación.');
     }
 
-    const filters: any = {
+    const filters: Filters = {
       nombreCompleto: formData.nombreCompleto,
       etnia: formData.etnia,
       idiomas: formData.idiomas,
-      edad: formData.edad !== "" ? Number(formData.edad) : undefined,
+      edad: formData.edad !== '' ? Number(formData.edad) : undefined,
       precio: formData.precio !== null ? Number(formData.precio) : undefined,
       distancia: formData.distancia,
     };
@@ -88,30 +106,33 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
         lat: userLocation.latitude,
         lon: userLocation.longitude,
       };
-      filters.zona = "Cercano"; // Para cumplir con la estructura de searhModels
+      filters.zona = 'Cercano'; // Para cumplir con la estructura de searhModels
     }
 
     try {
       const result = await searhModels(filters);
       if (!Array.isArray(result)) {
-        return toast.error("No se encontraron modelos o hubo un error.");
+        return toast.error('No se encontraron modelos o hubo un error.');
       }
 
       setDataModels(result);
     } catch {
       setDataModels([]);
-      toast.error("No se encontraron modelos o hubo un error.");
+      toast.error('No se encontraron modelos o hubo un error.');
     }
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="grid grid-cols-1 md:grid-cols-3 justify-between items-center gap-5 px-6 md:px-10"
+      className="grid grid-cols-1 items-center justify-between gap-5 px-6 md:grid-cols-3 md:px-10"
     >
       {/* Nombre Completo */}
       <div>
-        <label htmlFor="nombreCompleto" className="block mb-2 text-sm font-medium text-black">
+        <label
+          htmlFor="nombreCompleto"
+          className="mb-2 block text-sm font-medium text-black"
+        >
           Buscar
         </label>
         <input
@@ -121,13 +142,16 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
           value={formData.nombreCompleto}
           onChange={handleChange}
           placeholder="Nombre en especial"
-          className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block p-2.5 w-full lg:w-full"
+          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary focus:ring-primary lg:w-full"
         />
       </div>
 
       {/* Edad */}
       <div>
-        <label htmlFor="edad" className="block mb-2 text-sm font-medium text-black">
+        <label
+          htmlFor="edad"
+          className="mb-2 block text-sm font-medium text-black"
+        >
           Edad
         </label>
         <input
@@ -136,14 +160,17 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
           id="edad"
           value={formData.edad}
           onChange={handleChange}
-          className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary block p-2.5 w-full lg:w-full"
+          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary focus:ring-primary lg:w-full"
           max={90}
         />
       </div>
 
       {/* Filtro de distancia */}
       <div>
-        <label htmlFor="distancia" className="block mb-2 text-sm font-medium text-black">
+        <label
+          htmlFor="distancia"
+          className="mb-2 block text-sm font-medium text-black"
+        >
           Rango de distancia (km)
         </label>
         <input
@@ -153,21 +180,27 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
           min={1}
           max={50}
           value={formData.distancia}
-          onChange={(e) => setFormData({ ...formData, distancia: Number(e.target.value) })}
+          onChange={(e) =>
+            setFormData({ ...formData, distancia: Number(e.target.value) })
+          }
           className="w-full"
         />
-        <span className="block text-sm text-gray-700">{formData.distancia} km</span>
+        <span className="block text-sm text-gray-700">
+          {formData.distancia} km
+        </span>
       </div>
 
       {/* Etnia */}
       <div>
-        <label className="block mb-2 text-sm font-medium text-black">Etnia</label>
+        <label className="mb-2 block text-sm font-medium text-black">
+          Etnia
+        </label>
         <select
           name="etnia"
           id="etnia"
           value={formData.etnia}
           onChange={handleChange}
-          className="bg-gray-50 border border-gray-300 text-black rounded-lg focus:ring-primary focus:border-primary block p-2.5 w-full lg:w-full"
+          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-black focus:border-primary focus:ring-primary lg:w-full"
         >
           <option value="">Selecciona una opción</option>
           <optgroup label="Europa">
@@ -197,7 +230,10 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
 
       {/* Idioma */}
       <div>
-        <label htmlFor="idiomas" className="block text-sm font-medium text-black">
+        <label
+          htmlFor="idiomas"
+          className="block text-sm font-medium text-black"
+        >
           Idioma
         </label>
         <select
@@ -205,7 +241,7 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
           name="idiomas"
           value={formData.idiomas}
           onChange={handleChange}
-          className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 w-full lg:w-full"
+          className="w-full rounded-lg border border-gray-300 px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 lg:w-full"
         >
           <option value="">Seleccione un idioma</option>
           <option value="es">Español (Castellano)</option>
@@ -228,7 +264,10 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
           onChange={() => setUsarUbicacion(!usarUbicacion)}
           className="mr-2"
         />
-        <label htmlFor="usarUbicacion" className="text-sm font-medium text-black">
+        <label
+          htmlFor="usarUbicacion"
+          className="text-sm font-medium text-black"
+        >
           Buscar por ubicación
         </label>
       </div>
@@ -236,7 +275,7 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
       <div className="flex items-center justify-center md:justify-start">
         <button
           type="submit"
-          className="text-white bg-segundary hover:bg-primary focus:ring-2 focus:outline-none focus:ring-primary font-medium rounded-lg text-sm px-5 py-2.5 w-72 lg:w-32"
+          className="w-72 rounded-lg bg-segundary px-5 py-2.5 text-sm font-medium text-white hover:bg-primary focus:outline-none focus:ring-2 focus:ring-primary lg:w-32"
         >
           Buscar
         </button>

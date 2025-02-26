@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import axios from "axios";
-import { cookies } from "next/headers";
+import axios from 'axios';
+import { cookies } from 'next/headers';
 
 export async function loginAction({
   nombreUsuario,
@@ -18,41 +18,41 @@ export async function loginAction({
       {
         nombreUsuario: nombreUsuarioMin,
         password,
-      }
+      },
     );
 
     // Almacena el token y el ID en cookies
     const cookieStore = await cookies();
 
-    cookieStore.set("access_token", data.access_token, {
+    cookieStore.set('access_token', data.access_token, {
       httpOnly: true,
-      path: "/",
+      path: '/',
     });
 
-    cookieStore.set("userId", data.user.id, {
+    cookieStore.set('userId', data.user.id, {
       httpOnly: true,
-      path: "/",
+      path: '/',
     });
 
-    cookieStore.set("role", data.user.rol, {
+    cookieStore.set('role', data.user.rol, {
       httpOnly: true,
-      path: "/",
+      path: '/',
     });
-    cookieStore.set("nombreUsuario", data.user.nombreUsuario, {
+    cookieStore.set('nombreUsuario', data.user.nombreUsuario, {
       httpOnly: true,
-      path: "/",
+      path: '/',
     });
-    cookieStore.set("nombreCompleto", data.user.nombreCompleto, {
+    cookieStore.set('nombreCompleto', data.user.nombreCompleto, {
       httpOnly: true,
-      path: "/",
+      path: '/',
     });
-    cookieStore.set("suscripcionBasica", data.user.suscripcionBasica, {
+    cookieStore.set('suscripcionBasica', data.user.suscripcionBasica, {
       httpOnly: true,
-      path: "/",
+      path: '/',
     });
-    cookieStore.set("suscripcionPremiun", data.user.suscripcionPremiun, {
+    cookieStore.set('suscripcionPremiun', data.user.suscripcionPremiun, {
       httpOnly: true,
-      path: "/",
+      path: '/',
     });
 
     return {
@@ -63,6 +63,6 @@ export async function loginAction({
       nombreCompleto: data.user.nombreCompleto,
     };
   } catch {
-    return { success: false, message: "Credenciales incorrectas" };
+    return { success: false, message: 'Credenciales incorrectas' };
   }
 }

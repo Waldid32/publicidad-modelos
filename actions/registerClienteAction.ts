@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import axios from "axios";
+import axios from 'axios';
 
 export async function registerClienteAction(formData: {
   nombreCompleto: string;
@@ -15,20 +15,20 @@ export async function registerClienteAction(formData: {
     const sanitizedFormData = {
       ...formData,
       nombreUsuario: formData.nombreUsuario.toLowerCase(),
-      rol: "cliente", // Asegura que el rol sea siempre "cliente"
+      rol: 'cliente', // Asegura que el rol sea siempre "cliente"
     };
 
     // Llamada al endpoint de registro
     await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/users/register/cliente`,
-      sanitizedFormData
+      sanitizedFormData,
     );
 
     return { success: true };
   } catch (error: any) {
     return {
       success: false,
-      message: error.response?.data?.message || "Error al registrar",
+      message: error.response?.data?.message || 'Error al registrar',
     };
   }
 }

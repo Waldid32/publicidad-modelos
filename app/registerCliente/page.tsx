@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { registerClienteAction } from "@/actions/registerClienteAction";
+import { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { registerClienteAction } from '@/actions/registerClienteAction';
 
 export default function RegisterCliente() {
   const [formData, setFormData] = useState({
-    nombreCompleto: "",
-    email: "",
-    nombreUsuario: "",
-    fechaNacimiento: "",
-    password: "",
-    confirmarPassword: "",
+    nombreCompleto: '',
+    email: '',
+    nombreUsuario: '',
+    fechaNacimiento: '',
+    password: '',
+    confirmarPassword: '',
   });
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -22,16 +22,16 @@ export default function RegisterCliente() {
   const maxDate = new Date(
     today.getFullYear() - 18,
     today.getMonth(),
-    today.getDate()
+    today.getDate(),
   )
     .toISOString()
-    .split("T")[0];
+    .split('T')[0];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: name === "nombreUsuario" ? value.toLowerCase() : value,
+      [name]: name === 'nombreUsuario' ? value.toLowerCase() : value,
     }));
   };
 
@@ -50,7 +50,7 @@ export default function RegisterCliente() {
     }
 
     if (age < 18) {
-      toast.error("Debes tener al menos 18 años para registrarte.");
+      toast.error('Debes tener al menos 18 años para registrarte.');
       return;
     }
 
@@ -58,8 +58,8 @@ export default function RegisterCliente() {
       const result = await registerClienteAction(formData);
 
       if (result.success) {
-        toast.success("Registro exitoso. Ahora puedes iniciar sesión.");
-        router.push("/login");
+        toast.success('Registro exitoso. Ahora puedes iniciar sesión.');
+        router.push('/login');
       } else {
         toast.error(result.message);
       }
@@ -197,12 +197,12 @@ export default function RegisterCliente() {
                 className="w-full text-white bg-segundary hover:bg-primary hover:text-black focus:ring-4 focus:outline-none focus:ring-primary font-medium rounded-lg text-sm px-5 py-2.5 text-center "
                 disabled={isPending}
               >
-                {isPending ? "Registrando..." : "Registrarse"}
+                {isPending ? 'Registrando...' : 'Registrarse'}
               </button>
               <button
                 type="button"
                 className="w-full text-white bg-segundary hover:bg-primary hover:text-black focus:ring-4 focus:outline-none focus:ring-primary font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-                onClick={() => router.push("/")}
+                onClick={() => router.push('/')}
               >
                 Rregresar
               </button>

@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { logoutAction } from "@/actions/logoutAction";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { logoutAction } from '@/actions/logoutAction';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState, useTransition } from 'react';
 
 interface NavBarLoginProps {
   nombreCompleto?: string;
@@ -24,7 +24,7 @@ export default function NavBarLogin({
     e.preventDefault();
     startTransition(async () => {
       await logoutAction();
-      router.push("/");
+      router.push('/');
     });
   };
 
@@ -41,7 +41,7 @@ export default function NavBarLogin({
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         {/* LOGO */}
         <Link
-          href={role === "modelo" ? "/modelo" : "/cliente"}
+          href={role === 'modelo' ? '/modelo' : '/cliente'}
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
           <span className="self-center text-2xl font-semibold whitespace-nowrap border-2 border-segundary p-2 rounded-lg">
@@ -56,7 +56,7 @@ export default function NavBarLogin({
             <button
               type="button"
               className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300"
-              aria-expanded={isUserDropdownOpen ? "true" : "false"}
+              aria-expanded={isUserDropdownOpen ? 'true' : 'false'}
               onClick={toggleUserDropdown}
             >
               <span className="sr-only">Open user menu</span>
@@ -65,7 +65,7 @@ export default function NavBarLogin({
                 height={48}
                 className="w-12 h-12 rounded-full"
                 src={
-                  role === "modelo" ? "/icon-models.png" : "/icon-cliente.png"
+                  role === 'modelo' ? '/icon-models.png' : '/icon-cliente.png'
                 }
                 alt="user photo"
               />
@@ -97,7 +97,7 @@ export default function NavBarLogin({
                       onClick={handleLogout}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
-                      {isPending ? "Cerrando sesión..." : "Cerrar Sesión"}
+                      {isPending ? 'Cerrando sesión...' : 'Cerrar Sesión'}
                     </Link>
                   </li>
                 </ul>
@@ -106,12 +106,12 @@ export default function NavBarLogin({
           </div>
 
           {/* Botón hamburguesa (mobile) */}
-          {role === "modelo" || role === "admin" ? (
+          {role === 'modelo' || role === 'admin' ? (
             <button
               type="button"
               className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
               aria-controls="navbar-user"
-              aria-expanded={isMenuOpen ? "true" : "false"}
+              aria-expanded={isMenuOpen ? 'true' : 'false'}
               onClick={toggleMenu}
             >
               <span className="sr-only">Open main menu</span>
@@ -136,15 +136,16 @@ export default function NavBarLogin({
 
         {/* Menú principal (desktop y mobile) */}
         <div
-          className={`items-center justify-around w-full md:flex md:w-auto md:order-1 ${isMenuOpen ? "block" : "hidden"
-            }`}
+          className={`items-center justify-around w-full md:flex md:w-auto md:order-1 ${
+            isMenuOpen ? 'block' : 'hidden'
+          }`}
           id="navbar-user"
         >
-          {role === "modelo" ? (
+          {role === 'modelo' ? (
             <ul className="flex flex-col font-medium p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-whit md:p-3">
               <li>
                 <Link
-                  href={role === "modelo" ? "/modelo" : "/cliente"}
+                  href={role === 'modelo' ? '/modelo' : '/cliente'}
                   className="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0"
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -170,7 +171,7 @@ export default function NavBarLogin({
                 </Link>
               </li>
             </ul>
-          ) : role === "cliente" ? (
+          ) : role === 'cliente' ? (
             <ul className="flex flex-col font-medium p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-white md:p-3">
               <li>
                 <Link
@@ -191,15 +192,23 @@ export default function NavBarLogin({
                 </Link>
               </li>
             </ul>
-          ) : role === "admin" ? (
+          ) : role === 'admin' ? (
             <ul className="flex flex-col font-medium p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-white md:p-3">
               <li>
-                <Link href="/admin" className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0" onClick={() => setIsMenuOpen(false)}>
+                <Link
+                  href="/admin"
+                  className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0"
+                  onClick={() => setIsMenuOpen(false)}
+                >
                   Inicio
                 </Link>
               </li>
               <li>
-                <Link href="/admin/nuevoAdmin" className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0" onClick={() => setIsMenuOpen(false)}>
+                <Link
+                  href="/admin/nuevoAdmin"
+                  className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0"
+                  onClick={() => setIsMenuOpen(false)}
+                >
                   Nuevo Admin
                 </Link>
               </li>

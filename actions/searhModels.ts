@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import axios from "axios";
+import axios from 'axios';
 
 export async function searhModels(formData: {
   nombreCompleto: string;
@@ -15,13 +15,13 @@ export async function searhModels(formData: {
       `${process.env.NEXT_PUBLIC_API_URL}/users/models/filter`,
       {
         ...formData,
-      }
+      },
     );
     return result.data;
-  } catch (error: any) {
+  } catch {
     return {
       success: false,
-      message: error.response?.data?.message || "Busqueda fallida",
+      message: 'Busqueda fallida',
     };
   }
 }

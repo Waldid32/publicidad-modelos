@@ -1,9 +1,9 @@
-import { FormUpdateModel } from "@/components/FormUpdateModel";
-import { cookies } from "next/headers";
+import { FormUpdateModel } from '@/components/FormUpdateModel';
+import { cookies } from 'next/headers';
 
 export default async function ProfilePageModel() {
   const cookieStore = await cookies();
-  const nombreUsuario = cookieStore.get("nombreUsuario")?.value;
+  const nombreUsuario = cookieStore.get('nombreUsuario')?.value;
 
   if (!nombreUsuario) {
     return <div>No hay usuario en cookies</div>;
@@ -12,9 +12,9 @@ export default async function ProfilePageModel() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/users/${nombreUsuario}`,
     {
-      method: "GET",
-      cache: "no-store",
-    }
+      method: 'GET',
+      cache: 'no-store',
+    },
   );
 
   if (!res.ok) {

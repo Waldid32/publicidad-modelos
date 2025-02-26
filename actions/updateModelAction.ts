@@ -1,9 +1,9 @@
-"use server";
-import axios from "axios";
+'use server';
+import axios from 'axios';
 
 export async function updateModelAction(
   nombreUsuario: string,
-  formData: FormData
+  formData: FormData,
 ) {
   try {
     const result = await axios.patch(
@@ -11,15 +11,15 @@ export async function updateModelAction(
       formData,
       {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
-      }
+      },
     );
     return { success: true, data: result.data };
   } catch (error: any) {
     return {
       success: false,
-      message: error.response?.data?.message || "Actualización Fallida",
+      message: error.response?.data?.message || 'Actualización Fallida',
     };
   }
 }

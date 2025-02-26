@@ -1,13 +1,18 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import { updateModelAction } from "@/actions/updateModelAction";
-import { getCookieValue, idiomasDisponibles } from "@/utils/idiomasMap";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { calculateAge } from "@/utils/functions";
-import { ALLOWED_IMAGE_TYPES, ALLOWED_VIDEO_TYPES, MAX_IMAGE_SIZE, MAX_VIDEO_SIZE } from "@/utils/const";
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { updateModelAction } from '@/actions/updateModelAction';
+import { idiomasDisponibles } from '@/utils/idiomasMap';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { calculateAge } from '@/utils/functions';
+import {
+  ALLOWED_IMAGE_TYPES,
+  ALLOWED_VIDEO_TYPES,
+  MAX_IMAGE_SIZE,
+  MAX_VIDEO_SIZE,
+} from '@/utils/const';
 
 interface FormUpdateModelProps {
   dataModel: {
@@ -38,16 +43,15 @@ export function FormUpdateModel({ dataModel, role }: FormUpdateModelProps) {
     descripcion: string;
     multimedias: (string | File)[];
   }>({
-    duracionesAdicionales: dataModel.duracionesAdicionales || "",
+    duracionesAdicionales: dataModel.duracionesAdicionales || '',
     edad: calculateAge(dataModel.fechaNacimiento),
     idiomas: Array.isArray(dataModel.idiomas) ? dataModel.idiomas : [],
-    numeroContacto: dataModel.numeroContacto || "",
-    precioHora: dataModel.precioHora?.toString() || "",
-    descripcion: dataModel.descripcion || "",
+    numeroContacto: dataModel.numeroContacto || '',
+    precioHora: dataModel.precioHora?.toString() || '',
+    descripcion: dataModel.descripcion || '',
     multimedias: dataModel.multimedias || [],
   });
   const [hasSubscription, setHasSubscription] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
   const { nombreUsuario } = dataModel;
   const router = useRouter();
 
@@ -55,20 +59,18 @@ export function FormUpdateModel({ dataModel, role }: FormUpdateModelProps) {
   useEffect(() => {
     const fetchSubscription = async () => {
       try {
-        const res = await fetch("/api/auth/suscription");
+        const res = await fetch('/api/auth/suscription');
         if (!res.ok) {
           setHasSubscription(false);
           return;
         }
         const data = await res.json();
-        // Asumimos que en las cookies los valores son "true" o "false"
-        const susBasic = data.suscripcionBasica === "true";
-        const susPremiun = data.suscripcionPremiun === "true";
+        // Asumimos que en las cookies los valores son 'true' o 'false'
+        const susBasic = data.suscripcionBasica === 'true';
+        const susPremiun = data.suscripcionPremiun === 'true';
         setHasSubscription(susBasic || susPremiun);
-      } catch (error) {
+      } catch {
         setHasSubscription(false);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -78,14 +80,14 @@ export function FormUpdateModel({ dataModel, role }: FormUpdateModelProps) {
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => {
     const { name, value } = e.target;
 
     if (
       e.target instanceof HTMLSelectElement &&
       e.target.multiple &&
-      name === "idiomas"
+      name === 'idiomas'
     ) {
       const selectedValues = Array.from(e.target.options)
         .filter((opt) => opt.selected)
@@ -108,27 +110,29 @@ export function FormUpdateModel({ dataModel, role }: FormUpdateModelProps) {
     if (!files || files.length === 0) return;
 
     const fileArray = Array.from(files).filter((file) => {
-      if (file.type.startsWith("image/")) {
+      if (file.type.startsWith('image/')) {
         if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
           toast.error(`Tipo de imagen no permitido: ${file.type}`);
           return false;
         }
         if (file.size > MAX_IMAGE_SIZE) {
           toast.error(
-            `La imagen excede el tamaño permitido (${MAX_IMAGE_SIZE / 1024 / 1024
-            } MB)`
+            `La imagen excede el tamaño permitido (${
+              MAX_IMAGE_SIZE / 1024 / 1024
+            } MB)`,
           );
           return false;
         }
-      } else if (file.type.startsWith("video/")) {
+      } else if (file.type.startsWith('video/')) {
         if (!ALLOWED_VIDEO_TYPES.includes(file.type)) {
           toast.error(`Tipo de video no permitido: ${file.type}`);
           return false;
         }
         if (file.size > MAX_VIDEO_SIZE) {
           toast.error(
-            `El video excede el tamaño permitido (${MAX_VIDEO_SIZE / 1024 / 1024
-            } MB)`
+            `El video excede el tamaño permitido (${
+              MAX_VIDEO_SIZE / 1024 / 1024
+            } MB)`,
           );
           return false;
         }
@@ -157,50 +161,51 @@ export function FormUpdateModel({ dataModel, role }: FormUpdateModelProps) {
 
     const fd = new FormData();
 
-    fd.append("edad", formData.edad.toString());
-    fd.append("precioHora", formData.precioHora);
-    fd.append("descripcion", formData.descripcion);
-    fd.append("duracionesAdicionales", formData.duracionesAdicionales);
-    fd.append("numeroContacto", formData.numeroContacto);
+    fd.append('edad', formData.edad.toString());
+    fd.append('precioHora', formData.precioHora);
+    fd.append('descripcion', formData.descripcion);
+    fd.append('duracionesAdicionales', formData.duracionesAdicionales);
+    fd.append('numeroContacto', formData.numeroContacto);
 
-    formData.idiomas.forEach((idioma) => fd.append("idiomas[]", idioma));
+    formData.idiomas.forEach((idioma) => fd.append('idiomas[]', idioma));
 
     formData.multimedias.forEach((media) => {
-      if (typeof media === "string") {
-        fd.append("multimedias", media);
+      if (typeof media === 'string') {
+        fd.append('multimedias', media);
       } else {
-        fd.append("multimedias", media);
+        fd.append('multimedias', media);
       }
     });
 
     // Verifica si el usuario tiene suscripción activa
-    if (role !== "admin" && !hasSubscription) {
-      toast.error("Debes tener una suscripción activa para actualizar tu perfil.");
+    if (role !== 'admin' && !hasSubscription) {
+      toast.error(
+        'Debes tener una suscripción activa para actualizar tu perfil.',
+      );
       return;
     }
 
     try {
       const response = await updateModelAction(nombreUsuario, fd);
       if (response.success) {
-        toast.success("Información actualizada exitosamente");
-        if (role !== "model ") {
-          router.push("/modelo");
+        toast.success('Información actualizada exitosamente');
+        if (role !== 'model ') {
+          router.push('/modelo');
         }
-        router.push("/admin");
-
+        router.push('/admin');
       } else {
         toast.error(response.message);
       }
     } catch {
-      toast.error("Error al actualizar la información");
+      toast.error('Error al actualizar la información');
     }
   };
 
   const isVideo = (file: string | File) => {
-    if (typeof file === "string") {
+    if (typeof file === 'string') {
       return file.match(/\.(mp4)$/i);
     }
-    return file.type.startsWith("video/");
+    return file.type.startsWith('video/');
   };
 
   return (
@@ -348,7 +353,7 @@ export function FormUpdateModel({ dataModel, role }: FormUpdateModelProps) {
                   // Render video preview
                   <video
                     src={
-                      typeof media === "string"
+                      typeof media === 'string'
                         ? media
                         : URL.createObjectURL(media)
                     }
@@ -356,28 +361,28 @@ export function FormUpdateModel({ dataModel, role }: FormUpdateModelProps) {
                     controls
                   />
                 ) : // Render image preview
-                  typeof media === "string" ? (
-                    <Image
-                      src={
-                        media.startsWith("http")
-                          ? media
-                          : `http://${process.env.NEXT_PUBLIC_API_URL}${media}`
-                      }
-                      alt={`Media ${index + 1}`}
-                      width={160}
-                      height={160}
-                      unoptimized
-                    />
-                  ) : (
-                    <Image
-                      src={URL.createObjectURL(media)}
-                      alt={`Nueva media ${index + 1}`}
-                      className="w-20 h-20 object-cover"
-                      width={160}
-                      height={160}
-                      unoptimized
-                    />
-                  )}
+                typeof media === 'string' ? (
+                  <Image
+                    src={
+                      media.startsWith('http')
+                        ? media
+                        : `http://${process.env.NEXT_PUBLIC_API_URL}${media}`
+                    }
+                    alt={`Media ${index + 1}`}
+                    width={160}
+                    height={160}
+                    unoptimized
+                  />
+                ) : (
+                  <Image
+                    src={URL.createObjectURL(media)}
+                    alt={`Nueva media ${index + 1}`}
+                    className="w-20 h-20 object-cover"
+                    width={160}
+                    height={160}
+                    unoptimized
+                  />
+                )}
                 <button
                   type="button"
                   onClick={() => handleRemoveMedia(index)}

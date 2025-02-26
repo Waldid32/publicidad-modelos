@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Navbar } from "@/components/Navbar";
-import { SearchModels } from "@/components/SearchModels";
-import { TopModels } from "@/components/TopModels";
-import { ModelList } from "@/components/ModelList";
-import { ModelData } from "@/types/types";
+import { useState } from 'react';
+import { Navbar } from '@/components/Navbar';
+import { SearchModels } from '@/components/SearchModels';
+import { TopModels } from '@/components/TopModels';
+import { ModelList } from '@/components/ModelList';
+import { ModelData } from '@/types/types';
 
 export default function Home() {
   const [dataModels, setDataModels] = useState<ModelData[]>([]);

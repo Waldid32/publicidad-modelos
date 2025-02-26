@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import axios from "axios";
+import axios from 'axios';
 
 export async function registerModelsAction(formData: {
   nombreCompleto: string;
@@ -15,19 +15,19 @@ export async function registerModelsAction(formData: {
     const sanitizedFormData = {
       ...formData,
       nombreUsuario: formData.nombreUsuario.toLowerCase(),
-      rol: "modelo", // Asegura que el rol sea siempre "Modelo"
+      rol: 'modelo', // Asegura que el rol sea siempre "Modelo"
     };
 
     await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/users/register/modelo`,
-      sanitizedFormData
+      sanitizedFormData,
     );
 
     return { success: true };
   } catch (error: any) {
     return {
       success: false,
-      message: error.response?.data?.message || "Error al registrar",
+      message: error.response?.data?.message || 'Error al registrar',
     };
   }
 }

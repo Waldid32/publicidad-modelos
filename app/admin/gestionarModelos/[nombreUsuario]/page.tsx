@@ -1,13 +1,11 @@
 import { FormUpdateModel } from '@/components/FormUpdateModel';
 import { cookies } from 'next/headers';
 
-interface Props {
-  params: {
-    nombreUsuario: string;
-  };
-}
-
-export default async function GestionarModelosPage({ params }: Props) {
+export default async function GestionarModelosPage({
+  params,
+}: {
+  params: { nombreUsuario: string };
+}) {
   const { nombreUsuario } = params;
   const cookieStore = await cookies();
   const role = cookieStore.get('role')?.value || '';

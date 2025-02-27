@@ -30,6 +30,20 @@ export interface DataModels {
   zona: string;
 }
 
+export interface Rating {
+  id: string;
+  modelId: string;
+  clientId: string;
+  rating: number;
+  comment?: string;
+  createdAt: string;
+  updatedAt: string;
+  client: {
+    nombreUsuario: string;
+    nombreCompleto: string;
+  };
+}
+
 interface OpenCageGeometry {
   lat: number;
   lng: number;

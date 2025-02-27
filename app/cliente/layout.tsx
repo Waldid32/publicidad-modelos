@@ -18,7 +18,7 @@ export default async function ModeloLayout({
   return (
     <div className="bg-bgPrimaryGradiante h-[100vh]">
       <NavBarLogin role={role} nombreCompleto={nombreCompleto} />
-      <main className="bg-slate-400">{children}</main>
+      <main>{children}</main>
     </div>
   );
 }

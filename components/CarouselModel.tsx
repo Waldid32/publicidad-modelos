@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 export function CarouselModel({ multimedias }: { multimedias: string[] }) {
   return (
-    <div className="flex justify-center items-center w-96 h-96 lg:w-[650px] lg:h-[60vh]">
+    <div className="flex justify-center items-center w-96 h-96 lg:w-[650px] lg:h-[672px]">
       <Carousel slide={true} slideInterval={4000}>
         {multimedias.map((item, index) => {
           const isVideo = item.toLowerCase().endsWith('.mp4');

@@ -5,7 +5,12 @@ import axios from 'axios';
 
 export async function GET(
   request: Request,
-  { params }: { params: { nombreUsuario: string | string[] } },
+  {
+    params,
+  }: {
+    params: { nombreUsuario: string };
+    searchParams: { [key: string]: string | string[] | undefined };
+  },
 ) {
   const ratings = await axios.get(
     `${process.env.API_URL}/models/${params.nombreUsuario}/ratings`,
@@ -15,7 +20,12 @@ export async function GET(
 
 export async function POST(
   request: Request,
-  { params }: { params: { nombreUsuario: string } },
+  {
+    params,
+  }: {
+    params: { nombreUsuario: string };
+    searchParams: { [key: string]: string | string[] | undefined };
+  },
 ) {
   const cookieStore = await cookies();
   const token = cookieStore.get('access_token')?.value;

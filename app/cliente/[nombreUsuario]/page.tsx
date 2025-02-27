@@ -54,7 +54,7 @@ export default function ModelInfoClientPage() {
     const fetchUserRating = async () => {
       try {
         const response = await axios.get<Rating[]>(
-          `/api/models/${nombreUsuario}/ratings`,
+          `/api/ratings/${nombreUsuario}/ratings`,
           { withCredentials: true },
         );
         const myRating = response.data.find((r) => r.client.id === userId);
@@ -75,7 +75,7 @@ export default function ModelInfoClientPage() {
     e.preventDefault();
     try {
       await axios.post(
-        `/api/models/${nombreUsuario}/ratings`,
+        `/api/ratings/${nombreUsuario}/ratings`,
         { rating, comment },
         { withCredentials: true },
       );

@@ -16,7 +16,7 @@ export default async function ModeloLayout({
   const nombreCompleto = cookieStore.get('nombreCompleto')?.value || '';
 
   return (
-    <div className="bg-bgPrimaryGradiante h-[100vh]">
+    <div className="bg-bgPrimaryGradiante h-full">
       <NavBarLogin role={role} nombreCompleto={nombreCompleto} />
       <main>{children}</main>
     </div>

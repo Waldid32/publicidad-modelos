@@ -12,6 +12,7 @@
     "axios": "^1.7.9",
     "flowbite": "^2.5.2",
     "flowbite-react": "^0.10.2",
+    "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "next": "15.1.6",
     "react": "^19.0.0",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/js-cookie": "^3.0.6",
     "@types/jsonwebtoken": "^9.0.8",
     "@types/node": "^20",
     "@types/react": "^19",

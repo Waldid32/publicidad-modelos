@@ -11,7 +11,7 @@ interface PerfilPublicoProps {
 
 export function PerfilPublico({ dataModel }: PerfilPublicoProps) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 justify-center items-center gap-10 py-20 px-5">
+    <div className="grid grid-cols-1 lg:grid-cols-2 justify-center items-center gap-10 py-0 lg:py-10 px-5">
       {/* CAROUSEL DE MODELOS */}
       <CarouselModel multimedias={dataModel.multimedias} />
 

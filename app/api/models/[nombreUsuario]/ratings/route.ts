@@ -5,7 +5,7 @@ import axios from 'axios';
 
 export async function GET(
   request: Request,
-  { params }: { params: { nombreUsuario: string } },
+  { params }: { params: { nombreUsuario: string | string[] } },
 ) {
   const ratings = await axios.get(
     `${process.env.API_URL}/models/${params.nombreUsuario}/ratings`,

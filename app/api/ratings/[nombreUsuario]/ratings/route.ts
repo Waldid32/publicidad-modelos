@@ -5,30 +5,26 @@ import axios from 'axios';
 
 export async function GET(
   request: Request,
-  {
-    params,
-  }: {
-    params: { nombreUsuario: string };
-    searchParams: { [key: string]: string | string[] | undefined };
-  },
+  { params }: { params: Promise<{ nombreUsuario: string }> },
 ) {
+  // Extraer el parámetro explícitamente
+  const nombreUsuario = (await params).nombreUsuario;
+
+  // En la función GET
   const ratings = await axios.get(
-    `${process.env.API_URL}/models/${params.nombreUsuario}/ratings`,
+    `${process.env.API_URL}/models/${nombreUsuario}/ratings`,
   );
   return NextResponse.json(ratings.data);
 }
 
 export async function POST(
   request: Request,
-  {
-    params,
-  }: {
-    params: { nombreUsuario: string };
-    searchParams: { [key: string]: string | string[] | undefined };
-  },
+  { params }: { params: Promise<{ nombreUsuario: string }> },
 ) {
   const cookieStore = await cookies();
   const token = cookieStore.get('access_token')?.value;
+  // Extraer el parámetro explícitamente
+  const nombreUsuario = (await params).nombreUsuario;
 
   if (!token) {
     return NextResponse.json({ error: 'No autenticado' }, { status: 401 });
@@ -44,8 +40,9 @@ export async function POST(
   const body = await request.json();
   const { rating, comment } = body;
 
+  // En la función POST
   await axios.post(
-    `${process.env.API_URL}/models/${params.nombreUsuario}/ratings`,
+    `${process.env.API_URL}/models/${nombreUsuario}/ratings`,
     { rating, comment },
     {
       headers: {

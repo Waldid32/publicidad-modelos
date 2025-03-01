@@ -95,7 +95,6 @@ export default function ModelInfoClientPage() {
       <div>
         <PerfilPublico dataModel={dataModel} />
       </div>
-      <h1>Hola</h1>
       <div className="flex flex-col justify-center items-center gap-5 border border-gray-200 p-5 rounded-xl bg-white w-full lg:w-[650px] px-10">
         <h2 className="text-2xl font-bold mb-4">Califica a la modelo</h2>
         <form

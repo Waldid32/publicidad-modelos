@@ -12,7 +12,7 @@ export async function GET(
 
   // En la función GET
   const ratings = await axios.get(
-    `${process.env.API_URL}/models/${nombreUsuario}/ratings`,
+    `${process.env.NEXT_PUBLIC_API_URL}/models/${nombreUsuario}/ratings`,
   );
   return NextResponse.json(ratings.data);
 }
@@ -42,7 +42,7 @@ export async function POST(
 
   // En la función POST
   await axios.post(
-    `${process.env.API_URL}/models/${nombreUsuario}/ratings`,
+    `${process.env.NEXT_PUBLIC_API_URL}/models/${nombreUsuario}/ratings`,
     { rating, comment },
     {
       headers: {

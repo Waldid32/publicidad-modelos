@@ -39,7 +39,7 @@ export default function ModelInfoPage() {
   }
 
   return (
-    <div>
+    <div className="h-full">
       <Navbar />
       <div className="pt-24 flex flex-col justify-center items-center">
         <PerfilPublico dataModel={dataModel} />;

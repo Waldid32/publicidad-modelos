@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} w-full`}>
         {/* Incluye el proveedor de Sonner */}
         <Toaster position="top-right" />
         {children}

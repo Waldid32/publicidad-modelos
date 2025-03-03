@@ -11,6 +11,7 @@ export async function searhModels(formData: {
   precio: number | undefined;
 }) {
   try {
+    console.log(formData);
     const result = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/users/models/filter`,
       {
@@ -18,7 +19,8 @@ export async function searhModels(formData: {
       },
     );
     return result.data;
-  } catch {
+  } catch (err) {
+    console.log(err);
     return {
       success: false,
       message: 'Busqueda fallida',

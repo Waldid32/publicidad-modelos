@@ -19,7 +19,7 @@ export async function GET(req: Request) {
 
     // Llamar a la API externa (OpenCage API)
     const response = await fetch(
-      `https://api.opencagedata.com/geocode/v1/json?q=${query}&key=${process.env.OPENCAGE_API_KEY}&limit=100&countrycode=es&language=es`,
+      `https://api.opencagedata.com/geocode/v1/json?q=${query}&key=${process.env.OPENCAGE_API_KEY}&limit=100&language=es`,
     );
 
     if (!response.ok) {
@@ -28,8 +28,13 @@ export async function GET(req: Request) {
 
     const data: OpenCageResponse = await response.json();
 
-    // Formatear las sugerencias
-    const suggestions = data.results?.map((result) => result.formatted) || [];
+    // Mapear para retornar formatted, lat y lon
+    const suggestions =
+      data.results?.map((result) => ({
+        formatted: result.formatted,
+        lat: result.geometry.lat,
+        lon: result.geometry.lng,
+      })) || [];
 
     return NextResponse.json(suggestions);
   } catch {

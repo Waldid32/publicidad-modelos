@@ -5,6 +5,12 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { registerModelsAction } from '@/actions/registerModelsAction';
 
+interface LocationSuggestion {
+  formatted: string;
+  lat: number;
+  lon: number;
+}
+
 interface FormData {
   nombreCompleto: string;
   email: string;
@@ -15,6 +21,8 @@ interface FormData {
   etnia: string;
   zona: string;
   ciudad: string;
+  lat?: number;
+  lon?: number;
 }
 
 export default function RegisterModel() {
@@ -30,7 +38,7 @@ export default function RegisterModel() {
     ciudad: '',
   });
   const [isPending, startTransition] = useTransition();
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<LocationSuggestion[]>([]);
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(
     null,
   );
@@ -114,24 +122,28 @@ export default function RegisterModel() {
 
   const fetchLocations = async (query: string) => {
     try {
-      if (query.trim().length < 3) return; // Validar nuevamente antes de realizar la solicitud
-
+      if (query.trim().length < 3) return;
       const response = await fetch(`/api/locations?query=${query}`);
       if (!response.ok) {
         throw new Error('Error al consultar la API de ubicaciones.');
       }
-
-      const data = await response.json();
-      setSuggestions(data); // Actualizar sugerencias
+      const data: LocationSuggestion[] = await response.json();
+      setSuggestions(data);
     } catch {
-      setSuggestions([]); // Vaciar sugerencias si ocurre un error
+      setSuggestions([]);
     }
   };
 
-  const handleSuggestionClick = (suggestion: string) => {
-    const ciudadExtraida = suggestion.split(',').pop()?.trim() || '';
-
-    setFormData({ ...formData, zona: suggestion, ciudad: ciudadExtraida });
+  const handleSuggestionClick = (suggestion: LocationSuggestion) => {
+    // Extraer la ciudad del string formateado, si lo requieres
+    const ciudadExtraida = suggestion.formatted.split(',').pop()?.trim() || '';
+    setFormData({
+      ...formData,
+      zona: suggestion.formatted,
+      ciudad: ciudadExtraida,
+      lat: suggestion.lat,
+      lon: suggestion.lon,
+    });
     setSuggestions([]);
   };
 
@@ -289,7 +301,7 @@ export default function RegisterModel() {
                         onClick={() => handleSuggestionClick(suggestion)}
                         className="p-2 hover:bg-gray-200 cursor-pointer"
                       >
-                        {suggestion}
+                        {suggestion.formatted}
                       </li>
                     ))}
                   </ul>

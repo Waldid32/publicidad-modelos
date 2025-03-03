@@ -107,7 +107,6 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
         lat: userLocation.latitude,
         lon: userLocation.longitude,
       };
-      filters.zona = 'Cercano'; // Para cumplir con la estructura de searhModels
     }
 
     try {
@@ -117,7 +116,8 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
       }
 
       setDataModels(result);
-    } catch {
+    } catch (error) {
+      console.log(error);
       setDataModels([]);
       toast.error('No se encontraron modelos o hubo un error.');
     }

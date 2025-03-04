@@ -19,7 +19,7 @@ export async function GET(req: Request) {
 
     // Llamar a la API externa (OpenCage API)
     const response = await fetch(
-      `https://api.opencagedata.com/geocode/v1/json?q=${query}&key=${process.env.OPENCAGE_API_KEY}&limit=100&language=es`,
+      `https://api.opencagedata.com/geocode/v1/json?q=${query}&key=${process.env.OPENCAGE_API_KEY}&limit=100&countrycode=es&language=es`,
     );
 
     if (!response.ok) {

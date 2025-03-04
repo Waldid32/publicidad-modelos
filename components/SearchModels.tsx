@@ -99,7 +99,7 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
       edad: formData.edad !== '' ? Number(formData.edad) : undefined,
       precio: formData.precio !== null ? Number(formData.precio) : undefined,
       distancia: formData.distancia,
-      zona: usarUbicacion ? 'Cercano' : 'No especificado',
+      zona: usarUbicacion ? '' : 'No especificado',
     };
 
     if (usarUbicacion) {

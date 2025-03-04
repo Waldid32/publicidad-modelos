@@ -189,10 +189,12 @@ export function FormUpdateModel({ dataModel, role }: FormUpdateModelProps) {
       const response = await updateModelAction(nombreUsuario, fd);
       if (response.success) {
         toast.success('Información actualizada exitosamente');
-        if (role !== 'model ') {
+        if (role === 'model') {
           router.push('/modelo');
         }
-        router.push('/admin');
+        if (role === 'admin') {
+          router.push('/admin');
+        }
       } else {
         toast.error(response.message);
       }

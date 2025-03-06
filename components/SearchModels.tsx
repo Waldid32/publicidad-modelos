@@ -19,21 +19,22 @@ interface Filters {
   idiomas: string;
   edad: number | undefined;
   precio: number | undefined;
-  distancia: number;
+  distancia: number | undefined;
   ubicacion?: Ubicacion;
   zona: string;
 }
 
-export function SearchModels({ setDataModels }: SearchModelsProps) {
-  const [formData, setFormData] = useState({
-    nombreCompleto: '',
-    etnia: '',
-    idiomas: '',
-    edad: '' as number | '',
-    precio: null as number | null,
-    distancia: 10, // Distancia por defecto en km
-  });
+const initialFormState = {
+  nombreCompleto: '',
+  etnia: '',
+  idiomas: '',
+  edad: '' as number | '',
+  precio: null as number | null,
+  distancia: undefined as number | undefined, // Este valor se usará solo cuando aplicarDistancia sea true
+};
 
+export function SearchModels({ setDataModels }: SearchModelsProps) {
+  const [formData, setFormData] = useState(initialFormState);
   const [userLocation, setUserLocation] = useState<{
     latitude: number | null;
     longitude: number | null;
@@ -41,8 +42,7 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
     latitude: null,
     longitude: null,
   });
-
-  const [usarUbicacion, setUsarUbicacion] = useState(true); // Nuevo estado para controlar si se usa ubicación
+  const [usarUbicacion, setUsarUbicacion] = useState(true);
 
   // Obtener la ubicación del usuario si la opción está activada
   useEffect(() => {
@@ -99,7 +99,7 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
       edad: formData.edad !== '' ? Number(formData.edad) : undefined,
       precio: formData.precio !== null ? Number(formData.precio) : undefined,
       distancia: formData.distancia,
-      zona: usarUbicacion ? '' : 'No especificado',
+      zona: usarUbicacion ? '' : '',
     };
 
     if (usarUbicacion) {
@@ -116,8 +116,8 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
       }
 
       setDataModels(result);
-    } catch (error) {
-      console.log(error);
+      setFormData(initialFormState);
+    } catch {
       setDataModels([]);
       toast.error('No se encontraron modelos o hubo un error.');
     }
@@ -180,7 +180,7 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
           id="distancia"
           min={1}
           max={50}
-          value={formData.distancia}
+          value={formData.distancia ?? 0}
           onChange={(e) =>
             setFormData({ ...formData, distancia: Number(e.target.value) })
           }

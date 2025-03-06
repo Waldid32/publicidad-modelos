@@ -46,13 +46,20 @@ export function SearchModels({ setDataModels }: SearchModelsProps) {
 
   // Obtener la ubicación del usuario si la opción está activada
   useEffect(() => {
-    if (usarUbicacion && 'geolocation' in navigator) {
+    // Comprueba si ya hay ubicación almacenada en localStorage
+    const storedLocation = localStorage.getItem('userLocation');
+    if (storedLocation) {
+      setUserLocation(JSON.parse(storedLocation));
+    } else if (usarUbicacion && 'geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setUserLocation({
+          const location = {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
-          });
+          };
+          setUserLocation(location);
+          // Guarda la ubicación en localStorage para futuras visitas
+          localStorage.setItem('userLocation', JSON.stringify(location));
         },
         () => {
           toast.error('No se pudo obtener tu ubicación.');

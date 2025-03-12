@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { loginAction } from '@/actions/loginAction';
+import Link from 'next/link';
 
 export default function Login() {
   const [nombreUsuario, setNombreUsuario] = useState('');
@@ -89,12 +90,12 @@ export default function Login() {
                     <label className="text-gray-500 ">Acuérdate de mí</label>
                   </div>
                 </div>
-                <a
-                  href="#"
+                <Link
+                  href="/forgot-password"
                   className="text-sm font-medium text-segundary hover:underline "
                 >
                   ¿Has olvidado tu contraseña?
-                </a>
+                </Link>
               </div>
               <button
                 type="submit"

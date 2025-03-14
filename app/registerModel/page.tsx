@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { registerModelsAction } from '@/actions/registerModelsAction';
+import Link from 'next/link';
 
 interface LocationSuggestion {
   formatted: string;
@@ -364,6 +365,29 @@ export default function RegisterModel() {
                   required
                 />
               </div>
+              {/* Checkbox de aceptación de términos */}
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="aceptoCondiciones"
+                  name="aceptoCondiciones"
+                  required
+                  className="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2"
+                />
+                <label
+                  htmlFor="aceptoCondiciones"
+                  className="ml-2 text-sm text-gray-900"
+                >
+                  Acepto las{' '}
+                  <Link
+                    href="/condicionesGenerales"
+                    className="text-primary underline"
+                  >
+                    Condiciones Generales de Uso
+                  </Link>
+                </label>
+              </div>
+              <div></div>
               <div></div>
 
               <button

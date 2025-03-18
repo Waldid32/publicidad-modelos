@@ -38,7 +38,7 @@ export default function PlanesPage() {
   }, []);
 
   return (
-    <section className="flex flex-col justify-center items-center gap-10 h-screen">
+    <section className="flex flex-col justify-center items-center gap-10">
       {/* Mostrar Mensaje de Pago Exitoso o Cancelado */}
       <Modal show={status !== null} onClose={() => setStatus(null)}>
         <Modal.Header>
@@ -61,7 +61,7 @@ export default function PlanesPage() {
         </Modal.Footer>
       </Modal>
       {/* TITLE */}
-      <h1 className="font-bold text-xl">SUSCRIPCIONES / PLANES</h1>
+      <h1 className="font-bold text-xl py-10">SUSCRIPCIONES / PLANES</h1>
 
       {/* PLANES */}
       <div className="flex flex-col lg:flex-row gap-10 justify-center items-start">

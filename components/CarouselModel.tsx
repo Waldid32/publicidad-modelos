@@ -5,8 +5,8 @@ import Image from 'next/image';
 
 export function CarouselModel({ multimedias }: { multimedias: string[] }) {
   return (
-    <div className="flex justify-center items-center w-96 h-96 lg:w-[650px] lg:h-[672px]">
-      <Carousel slide={true} slideInterval={4000}>
+    <div className="flex justify-center items-center w-full h-96 lg:w-[650px] lg:h-[672px]">
+      <Carousel slide={true} slideInterval={2000}>
         {multimedias.map((item, index) => {
           const isVideo = item.toLowerCase().endsWith('.mp4');
           return isVideo ? (
@@ -19,8 +19,8 @@ export function CarouselModel({ multimedias }: { multimedias: string[] }) {
               src={item}
               alt={`Multimedia ${index}`}
               className="w-full h-full object-fill rounded-2xl"
-              width={10}
-              height={30}
+              width={300}
+              height={300}
               key={index}
               unoptimized
             />

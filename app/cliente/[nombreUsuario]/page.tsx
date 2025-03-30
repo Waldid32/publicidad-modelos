@@ -7,6 +7,7 @@ import { DataModels } from '@/types/types';
 import { useParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
+import { RatingList } from '@/components/RatingList';
 
 interface Rating {
   rating: number;
@@ -146,6 +147,7 @@ export default function ModelInfoClientPage() {
           </button>
         </form>
       </div>
+      <RatingList nombreUsuario={dataModel.nombreUsuario} />
     </div>
   );
 }

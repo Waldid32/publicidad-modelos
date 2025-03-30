@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import { PerfilPublico } from '@/components/PerfilPublico';
 import { DataModels } from '@/types/types';
+import { RatingList } from '@/components/RatingList';
 
 export default async function Modelos() {
   const cookieStore = await cookies();
@@ -27,6 +28,7 @@ export default async function Modelos() {
   return (
     <div className="flex flex-col gap-10 justify-center items-center">
       <PerfilPublico dataModel={dataModel} />
+      <RatingList nombreUsuario={dataModel.nombreUsuario} />
     </div>
   );
 }

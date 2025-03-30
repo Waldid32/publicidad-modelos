@@ -163,7 +163,8 @@ export default function RegisterModel() {
                   htmlFor="nombreCompleto"
                   className="block mb-2 text-sm font-medium text-gray-900 "
                 >
-                  Nombre Completo
+                  Nombre Completo{' '}
+                  <span className="text-red-600 font-bold">*</span>
                 </label>
                 <input
                   type="text"
@@ -182,7 +183,7 @@ export default function RegisterModel() {
                   htmlFor="email"
                   className="block mb-2 text-sm font-medium text-gray-900"
                 >
-                  Email
+                  Email <span className="text-red-600 font-bold">*</span>
                 </label>
                 <input
                   type="email"
@@ -201,7 +202,8 @@ export default function RegisterModel() {
                   htmlFor="nombreUsuario"
                   className="block mb-2 text-sm font-medium text-gray-900 "
                 >
-                  Nombre de Usuario
+                  Nombre de Usuario{' '}
+                  <span className="text-red-600 font-bold">*</span>
                 </label>
                 <input
                   type="text"
@@ -221,7 +223,8 @@ export default function RegisterModel() {
                   htmlFor="fechaNacimiento"
                   className="block mb-2 text-sm font-medium text-gray-900 "
                 >
-                  Fecha de Nacimiento
+                  Fecha de Nacimiento{' '}
+                  <span className="text-red-600 font-bold">*</span>
                 </label>
                 <input
                   type="date"
@@ -238,7 +241,7 @@ export default function RegisterModel() {
               {/* Etnia */}
               <div className="user-box">
                 <label className="block mb-2 text-sm font-medium text-gray-900">
-                  Etnia
+                  Etnia <span className="text-red-600 font-bold">*</span>
                 </label>
                 <select
                   name="etnia"
@@ -279,7 +282,8 @@ export default function RegisterModel() {
                   htmlFor="zona"
                   className="block mb-2 text-sm font-medium text-gray-900"
                 >
-                  Zona / Dirección
+                  Zona / Dirección{' '}
+                  <span className="text-red-600 font-bold">*</span>
                 </label>
                 <input
                   type="text"
@@ -315,7 +319,7 @@ export default function RegisterModel() {
                   htmlFor="ciudad"
                   className="block mb-2 text-sm font-medium text-gray-900 "
                 >
-                  Ciudad
+                  Ciudad <span className="text-red-600 font-bold">*</span>
                 </label>
                 <input
                   type="text"
@@ -334,7 +338,7 @@ export default function RegisterModel() {
                   htmlFor="password"
                   className="block mb-2 text-sm font-medium text-gray-900 "
                 >
-                  Contraseña
+                  Contraseña <span className="text-red-600 font-bold">*</span>
                 </label>
                 <input
                   type="password"
@@ -353,7 +357,8 @@ export default function RegisterModel() {
                   htmlFor="confirmarPassword"
                   className="block mb-2 text-sm font-medium text-gray-900 "
                 >
-                  Confirmar Contraseña
+                  Confirmar Contraseña{' '}
+                  <span className="text-red-600 font-bold">*</span>
                 </label>
                 <input
                   type="password"

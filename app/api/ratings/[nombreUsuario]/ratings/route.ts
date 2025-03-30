@@ -10,11 +10,18 @@ export async function GET(
   // Extraer el parámetro explícitamente
   const nombreUsuario = (await params).nombreUsuario;
 
-  // En la función GET
-  const ratings = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/models/${nombreUsuario}/ratings`,
-  );
-  return NextResponse.json(ratings.data);
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/models/${nombreUsuario}/ratings`,
+    );
+    return NextResponse.json(response.data);
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      { error: 'Error al obtener las reseñas' },
+      { status: 500 },
+    );
+  }
 }
 
 export async function POST(

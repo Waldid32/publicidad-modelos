@@ -1,8 +1,10 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { ModelData } from '@/types/types';
 import Image from 'next/image';
 import Link from 'next/link';
+import axios from 'axios';
 
 interface ModelListProps {
   dataModels: ModelData[];
@@ -11,19 +13,57 @@ interface ModelListProps {
   isLoggedIn?: boolean;
 }
 
+interface RatingStats {
+  average: number;
+  count: number;
+}
+
 export function ModelList({
   dataModels,
   favoritos = [],
   toggleFavorito,
   isLoggedIn = false,
 }: ModelListProps) {
+  const [modelsWithRatings, setModelsWithRatings] = useState<ModelData[]>([]);
+
+  useEffect(() => {
+    const fetchRatings = async () => {
+      const models = await Promise.all(
+        dataModels.map(async (model) => {
+          try {
+            const response = await axios.get<RatingStats>(
+              `/api/models/${model.nombreUsuario}/average-rating`,
+            );
+            return {
+              ...model,
+              averageRating: response.data.average,
+              totalReviews: response.data.count,
+            };
+          } catch (error) {
+            console.error('Error fetching ratings:', error);
+            return {
+              ...model,
+              averageRating: 0,
+              totalReviews: 0,
+            };
+          }
+        }),
+      );
+      setModelsWithRatings(models);
+    };
+
+    if (dataModels.length > 0) {
+      fetchRatings();
+    }
+  }, [dataModels]);
+
   if (dataModels.length === 0) {
     return <p className="text-center text-lg">No hay modelos disponibles.</p>;
   }
 
   return (
     <section className="grid grid-cols-1 lg:grid-cols-2 justify-center items-center gap-10 py-10 px-5 bg-white">
-      {dataModels.map((data, index) => (
+      {modelsWithRatings.map((data, index) => (
         <div
           key={index}
           className="relative border-2 border-primary rounded-lg p-4 gap-4 lg:w-[550px] w-full lg:h-80"
@@ -59,13 +99,25 @@ export function ModelList({
               <p className="font-light text-gray-500 line-clamp-3 overflow-hidden py-5">
                 {data.descripcion ?? 'Descripción no disponible.'}
               </p>
-              <span className="text-gray-500 font-semibold py-10">
-                {data.zona}
-              </span>
+
+              {/* Sección de calificaciones */}
+              <div className="mt-auto">
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center">
+                    <span className="text-yellow-400 text-xl">★</span>
+                    <span className="font-semibold ml-1">
+                      {data.averageRating?.toFixed(1) || '0.0'}
+                    </span>
+                  </div>
+                  <span className="text-gray-500 text-sm">
+                    ({data.totalReviews || 0} reseñas)
+                  </span>
+                </div>
+              </div>
             </div>
           </Link>
 
-          {/* ⭐ Mostrar estrella solo si el usuario está logueado */}
+          {/* Botón de favoritos */}
           {isLoggedIn && toggleFavorito && (
             <button
               onClick={(e) => {

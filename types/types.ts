@@ -8,6 +8,8 @@ export interface ModelData {
   zona: string;
   multimedias: string[];
   numeroContacto: string;
+  averageRating?: number;
+  totalReviews?: number;
 }
 
 export interface DataModels {

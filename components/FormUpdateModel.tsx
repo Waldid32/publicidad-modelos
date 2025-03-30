@@ -232,7 +232,7 @@ export function FormUpdateModel({ dataModel, role }: FormUpdateModelProps) {
             htmlFor="numeroContacto"
             className="peer-focus:font-medium text-sm text-black font-semibold"
           >
-            Número de contacto
+            Número de contacto <span className="text-red-600 font-bold">*</span>
           </label>
         </div>
 
@@ -269,7 +269,7 @@ export function FormUpdateModel({ dataModel, role }: FormUpdateModelProps) {
             htmlFor="precioHora"
             className="peer-focus:font-medium text-sm text-black font-semibold"
           >
-            $ Precio por Hora
+            $ Precio por Hora <span className="text-red-600 font-bold">*</span>
           </label>
         </div>
 
@@ -293,7 +293,7 @@ export function FormUpdateModel({ dataModel, role }: FormUpdateModelProps) {
             htmlFor="idiomas"
             className="peer-focus:font-medium text-sm text-black font-semibold"
           >
-            Idiomas
+            Idiomas <span className="text-red-600 font-bold">*</span>
           </label>
         </div>
 
@@ -311,7 +311,8 @@ export function FormUpdateModel({ dataModel, role }: FormUpdateModelProps) {
             htmlFor="duracionesAdicionales"
             className="peer-focus:font-medium text-sm text-black font-semibold"
           >
-            Duraciones Adicionales / de servicios
+            Servicios extras
+            <span className="text-red-600 font-bold">(Opcional)</span>
           </label>
         </div>
 
@@ -329,7 +330,8 @@ export function FormUpdateModel({ dataModel, role }: FormUpdateModelProps) {
             htmlFor="descripcion"
             className="peer-focus:font-medium text-sm text-black font-semibold"
           >
-            Presentación de modelo
+            Presentación de modelo{' '}
+            <span className="text-red-600 font-bold">*</span>
           </label>
         </div>
 
@@ -339,7 +341,8 @@ export function FormUpdateModel({ dataModel, role }: FormUpdateModelProps) {
             className="block mb-2 text-sm font-medium text-gray-900"
             htmlFor="multimedia"
           >
-            Multimedias (Imágenes y Videos)
+            Multimedias (Imágenes y Videos){' '}
+            <span className="text-red-600 font-bold">*</span>
           </label>
           <input
             type="file"
